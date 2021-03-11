@@ -9,14 +9,9 @@ package oocsaad;
  *
  * @author jonpaulcarlo
  */
-public class OocSaad {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) 
-    {
-       
-    }
+public class User {
+    
+    private String email;
+    private int cardNumber;
     
 }

@@ -9,9 +9,6 @@ package oocsaad;
  *
  * @author jonpaulcarlo
  */
-public class Test {
+public class Movies {
     
-    
-    String name;
-    Integer age;
 }
