@@ -11,4 +11,7 @@ package oocsaad;
  */
 public class Test {
     
+    
+    String name;
+    Integer age;
 }
