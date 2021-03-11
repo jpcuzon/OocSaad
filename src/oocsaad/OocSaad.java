@@ -25,6 +25,7 @@ public class OocSaad {
         
         
         System.out.println("Test JP");
+        System.out.println("Test JP2");
     }
     
 }
