@@ -11,4 +11,9 @@ package oocsaad;
  */
 public class Movies {
     
+    boolean avb;
+    String title;
+    String genre;
+    
+    
 }

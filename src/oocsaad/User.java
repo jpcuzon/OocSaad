@@ -11,7 +11,7 @@ package oocsaad;
  */
 public class User {
     
-    private String email;
-    private int cardNumber;
+    protected String email;
+    protected int cardNumber;
     
 }
