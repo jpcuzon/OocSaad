@@ -20,7 +20,6 @@ public class OocSaad {
         System.out.println("Test2");
         System.out.println("test leo");
         
-        System.out.println("error");
         
     }
     
