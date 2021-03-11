@@ -21,6 +21,7 @@ public class OocSaad {
         System.out.println("test leo");
         
         System.out.println("Test 2");
+        System.out.println("test same line");
         
         
         System.out.println("Test JP");
