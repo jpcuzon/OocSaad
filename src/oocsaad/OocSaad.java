@@ -16,6 +16,8 @@ public class OocSaad {
      */
     public static void main(String[] args) 
     {
+        view view1 = new view();
+        view1.main();
        
     }
     
