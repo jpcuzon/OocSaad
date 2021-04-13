@@ -9,6 +9,7 @@ import view.view;
 import model.Model;
 import model.Movies;
 import java.util.Scanner;
+import model.User;
 
 public class OocSaad {
 
@@ -23,11 +24,10 @@ public class OocSaad {
     
     public OocSaad(){
         
-        view view1 = new view();
-        view1.main();
-
-        searchMovie();
-        
+//        view view1 = new view();
+//        view1.main();
+//        searchMovie();
+        addCard();
         
     }
     
@@ -69,6 +69,60 @@ public class OocSaad {
 
 
     }
+    
+    //assigning credit cards to users.
+    public void addCard(){
+        
+        Model model = new Model();
+        User user = new User();
+        Scanner kb = new Scanner(System.in); //for string inputs
+        Scanner pn = new Scanner(System.in); //for int inputs
+        boolean check;
+        String pin;
+        
+        
+        System.out.print("Welcome! \nEnter Card (press enter): ");
+        String enter = kb.nextLine(); //simulates entering the card by pressing enter key
+        
+        System.out.print("New User? (Y/N): "); //will be "enter pin/generate new card in the final"
+        String yn = kb.nextLine();
+        
+        if(yn.equalsIgnoreCase("y")){  //make a little button to generate a card in the final build
+            user.generateCard(); //generates a random card
+            model.UserCard(user); 
+        
+            System.out.println("Your Card Number is: " + user.getCardNumber());
+            System.out.println("Your PIN: " + user.getCardPin()); 
+            System.out.println("Please remember your PIN!");
+        }
+        else{
+            check = true;  //initialize the check boolean
+            
+            while(check){  //loops the input stage if the user inputs an invalid pin 
+                
+                System.out.print("Please enter your 3-digit CVC: ");
+                pin = pn.nextLine();
+                user.setCardPin(pin); //assigns the pin on the user --- need a counter on model to confirm if it has a match on the db 
+                if(!pin.matches("[a-zA-Z]*")&&(pin.length()==3)&&!pin.contains(" ")){  //  checks if the pin contains a letter or has more/less than 3 digits
+                    check = false;
+                }else{System.out.println("Please enter a valid pin!\n");}
+            }
+            
+            if(model.countPin(user)>0){
+                String[] tempUser = model.checkPin(user); //fetch the card num/pin on the database
+                System.out.println("Your Card # is: "+tempUser[0] + "\nYour Pin: "+tempUser[1]);
+            }
+            else{
+                System.out.println("Incorrect pin!");
+            }
+            
+            
+            
+        }
+        
+        
+    }
+    
     
     
     
