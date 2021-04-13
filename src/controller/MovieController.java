@@ -3,33 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package oocsaad;
+package controller;
 
-import view.view;
+import java.util.Scanner;
 import model.Model;
 import model.Movies;
-import java.util.Scanner;
 
-public class OocSaad {
-
-    
-    
-    
-    public static void main(String[] args) 
-    {
-       new OocSaad();
-        
-    }
-    
-    public OocSaad(){
-        
-        view view1 = new view();
-        view1.main();
-
-        searchMovie();
-        
-        
-    }
+/**
+ *
+ * @author jonpaulcarlo
+ */
+public class MovieController {
     
     public void searchMovie(){
         
@@ -69,8 +53,5 @@ public class OocSaad {
 
 
     }
-    
-    
-    
     
 }

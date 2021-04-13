@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package oocsaad;
+package controller;
 
 /**
  *
  * @author jonpaulcarlo
  */
-public class User {
-    
-    protected String email;
-    protected int cardNumber;
+public class UserController {
     
 }
