@@ -24,10 +24,10 @@ public class OocSaad {
     
     public OocSaad(){
         
-//        view view1 = new view();
-//        view1.main();
+        view view1 = new view();
+        view1.welcome();
 //        searchMovie();
-        addCard();
+//        addCard();
         
     }
     
