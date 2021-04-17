@@ -6,7 +6,7 @@
 package oocsaad;
 
 import controller.ViewController;
-import view.view;
+import view.View;
 import model.Model;
 import model.Movies;
 import java.util.Scanner;
@@ -19,15 +19,15 @@ public class OocSaad {
     
     public static void main(String[] args) 
     {
-       new OocSaad();
-//       new ViewController();
+//       new OocSaad();
+       new ViewController();  //calls the controller class
         
     }
     
     public OocSaad(){
 
-        view view1 = new view();
-        view1.welcome();
+//        View view1 = new View();
+//        view1.welcome();
 //        searchMovie();
 //        addCard();
         

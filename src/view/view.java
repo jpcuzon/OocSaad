@@ -22,16 +22,24 @@ import javax.swing.JTextField;
  *
  * @author leojk
  */
-public class view extends JFrame {
+public class View extends JFrame {
 //    ViewController ViewController;
 //    public view(ViewController ViewController){
 //        this.ViewController = ViewController;
 //        welcome();
 //    }
     
+    ViewController viewController;
+    
     JFrame main;
     JFrame welcome;
 
+    public View(ViewController viewController){  //I honestly don't know why this is needed, I just copied it on Amilcar's code on GUI with the comment below and it removed the error
+        this.viewController = viewController;
+        // We encapsulated the building process of the window
+        welcome();  //calls the home page
+        
+    }
     
     public void welcome(){
         //welcome page

@@ -5,19 +5,29 @@
  */
 package controller;
 
-import oocsaad.OocSaad;
-import view.view;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import view.View;
 
 /**
  *
  * @author jonpaulcarlo
  */
-public class ViewController {
-//    view view;
-//    OocSaad OocSaad;
-//
-//    public ViewController (){
-//      this.view = new view(this);
-//      this.OocSaad = new OocSaad();
-//    }
+public class ViewController implements ActionListener {
+    View view;
+//    OocSaad OocSaad;   can be removed
+
+    public ViewController (){
+      this.view = new View(this);
+//      this.OocSaad = new OocSaad(); can be removed
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    
+    
 }
