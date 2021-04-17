@@ -5,6 +5,7 @@
  */
 package oocsaad;
 
+import controller.ViewController;
 import view.view;
 import model.Model;
 import model.Movies;
@@ -19,11 +20,12 @@ public class OocSaad {
     public static void main(String[] args) 
     {
        new OocSaad();
+//       new ViewController();
         
     }
     
     public OocSaad(){
-        
+
         view view1 = new view();
         view1.welcome();
 //        searchMovie();
