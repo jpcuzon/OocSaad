@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -33,6 +34,8 @@ public class View extends JFrame {
     
     JFrame main;
     JFrame welcome;
+    JFrame returnn;
+    JFrame faq;
 
     public View(ViewController viewController){  //I honestly don't know why this is needed, I just copied it on Amilcar's code on GUI with the comment below and it removed the error
         this.viewController = viewController;
@@ -70,7 +73,11 @@ public class View extends JFrame {
             
         //center    
         JButton rent = new JButton("Rent a movie");
+            rent.addActionListener(viewController);
+            rent.setActionCommand("rent");
         JButton retur = new JButton("Return a movie");
+            retur.addActionListener(viewController);
+            retur.setActionCommand("retur");
             
             JPanel rr = new JPanel();
                 welcome.add(rr, BorderLayout.CENTER);
@@ -101,16 +108,20 @@ public class View extends JFrame {
             
         Font txt = new Font("Arial Black", Font.PLAIN,15);
     
-        //top panel (search bar)
+        //top panel (search bar, never change)
         JPanel search = new JPanel();
             main.add(search, BorderLayout.PAGE_START);
             search.setBackground(new Color(160,0,0));
             GridLayout searchGrid = new GridLayout(1,4);
                 search.setLayout(searchGrid);
-        //image    
-        ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
-            logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
-            JLabel logo = new JLabel(logoxtra);
+                
+            //image    
+            ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
+                logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
+                JButton logo = new JButton();
+            logo.setIcon(logoxtra); //button with image needs design fix
+                logo.addActionListener(viewController);
+                logo.setActionCommand("logo");
                 search.add(logo);
                 
             JTextField searchBar = new JTextField();
@@ -119,12 +130,10 @@ public class View extends JFrame {
                 search.add(searchButton);
             JButton cart = new JButton("My Cart");
                 search.add(cart);
-                
-                
-                
-        //left panel (movies categories)
-        JPanel categories = new JPanel();
-            categories.setBackground(new Color(160,0,0));
+     
+            //left panel (movies categories, also never change)
+            JPanel categories = new JPanel();
+                categories.setBackground(new Color(160,0,0));
             main.add(categories, BorderLayout.LINE_START);
             
             GridLayout menuGrid = new GridLayout(13,1);
@@ -163,7 +172,10 @@ public class View extends JFrame {
                 categories.add(hiw);
                 
             JButton faq = new JButton("FAQ");
+            faq.addActionListener(viewController);
+            faq.setActionCommand("faq");
                 categories.add(faq);
+                
                 
         //first panel (this will be the one that change) 
         JPanel p1 = new JPanel();
@@ -250,20 +262,87 @@ public class View extends JFrame {
 //        JLabel alaTitle = new JLabel("Aladdin");
 //            soonM.add(alaTitle);
 //        JLabel godzTitle = new JLabel("Godzilla: King of the Monsters");
-//            soonM.add(godzTitle);
+//            soonM.add(godzTitle);   
         
-            
         
-             
-                    
-            
-            
-            
-            
-            
-            
             
 }
+    //return frame
+    public void returnn(){
+        returnn = new JFrame();
+            returnn.setVisible(true);
+            returnn.setSize(600, 600);
+            returnn.setTitle("Xtra Vision");
+            BorderLayout welcomeLayout = new BorderLayout();
+            returnn.setLayout(welcomeLayout);
+            
+                    JPanel search = new JPanel();
+            returnn.add(search, BorderLayout.PAGE_START);
+            search.setBackground(new Color(160,0,0));
+            GridLayout searchGrid = new GridLayout(1,4);
+                search.setLayout(searchGrid);
+        //image    
+        ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
+            logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
+            JButton logo = new JButton();
+            logo.setIcon(logoxtra); //button with image needs design fix
+                logo.addActionListener(viewController);
+                logo.setActionCommand("logo");
+                search.add(logo);
+                
+            JTextField searchBar = new JTextField();
+                search.add(searchBar);   
+            JButton searchButton = new JButton("Search");
+                search.add(searchButton);
+            JButton cart = new JButton("My Cart");
+                search.add(cart);
+    }  
     
-    
+    //faq frame
+    public void faq(){
+        String[] questions={"Questions","Answers"};
+        String[][] answers={{"How long can I keep the movie?","You can keep the movie for 3 days"},
+                {"How much cost each movie?","Each movie costs £3,99"},
+                {"Why do I need to pay a security deposit?","We change a security deposit in case any damage cause on the disk, scretches for example"},
+                {"How much is the security deposit?","The security desposit is £7,99"},
+                {"What happen if I do not return the disk?","We will automatically charge on your credit card the security deposit"}};
+        
+        faq = new JFrame();
+            faq.setVisible(true);
+            faq.setSize(600, 600);
+            faq.setTitle("Xtra Vision");
+            BorderLayout welcomeLayout = new BorderLayout();
+            faq.setLayout(welcomeLayout);
+            
+                    JPanel search = new JPanel();
+            faq.add(search, BorderLayout.PAGE_START);
+            search.setBackground(new Color(160,0,0));
+            GridLayout searchGrid = new GridLayout(1,4);
+                search.setLayout(searchGrid);
+        //image    
+        ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
+            logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
+            JButton logo = new JButton();
+            logo.setIcon(logoxtra); //button with image needs design fix
+                logo.addActionListener(viewController);
+                logo.setActionCommand("logo");
+                search.add(logo);
+                
+            JTextField searchBar = new JTextField();
+                search.add(searchBar);   
+            JButton searchButton = new JButton("Search");
+                search.add(searchButton);
+            JButton cart = new JButton("My Cart");
+                search.add(cart);
+                
+        //panel for the questions and answers
+        JPanel p1 = new JPanel();
+            faq.add(p1, BorderLayout.CENTER);
+           
+        JTable qaa = new JTable(answers,questions);
+        JScrollPane qaaScroll = new JScrollPane(qaa);
+            faq.add(qaa);
+                
+          
+    }
 }

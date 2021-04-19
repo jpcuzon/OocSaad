@@ -7,6 +7,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import view.View;
 
 /**
@@ -15,16 +16,44 @@ import view.View;
  */
 public class ViewController implements ActionListener {
     View view;
-//    OocSaad OocSaad;   can be removed
 
     public ViewController (){
       this.view = new View(this);
-//      this.OocSaad = new OocSaad(); can be removed
     }
 
     @Override
+    //rent movie
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getActionCommand().equals("rent")) {
+            System.out.println("rent a movie");
+//            view.welcome.dispatchEvent(new WindowEvent(view.welcome, WindowEvent.WINDOW_CLOSING)); for some reason this line has an error .-.
+            view.main();
+        }
+        //image as a button, return to welcome screen
+        if(e.getActionCommand().equals("logo")){
+            System.out.println("welcome screen");
+            view.welcome();
+        }
+        //return screen
+        if(e.getActionCommand().equals("retur")){
+            System.out.println("return a movie");
+            view.returnn();
+        }
+        
+        //FAQ
+        if(e.getActionCommand().equals("faq")){
+            System.out.println("FAQ frame for help");
+            view.faq();
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
     
     
