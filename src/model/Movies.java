@@ -20,20 +20,7 @@ public class Movies {
     
     protected String searchTitle;
     
-    
-    
-    
-//    String[] movieList = {"Matrix", "The Lion King", "Harry Potter", "The Avengers", "Pirates of the Caribbean", "Silence of the Lambs", "Spider-Man: Far From Home", "Iron Man", "Tenet", "John Wick"};
-
-//    public String[] getMovieList() {
-//        return movieList;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Movies{" + "avb=" + avb + ", movieList=" + movieList + '}';
-//    }
-    
+ 
     public Movies (String searchTitle){
         this.searchTitle = searchTitle;
     }

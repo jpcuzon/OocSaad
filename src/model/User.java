@@ -5,85 +5,21 @@
  */
 package model;
 
-import java.util.Random;
-
 /**
  *
  * @author jonpaulcarlo
  */
 public class User {
     
-    
-    CardGenerator cg = new CardGenerator();
-    protected String email;
-    protected String cardNumber;
-    protected String cardPin;
+    private String email;
 
-    public void generateCard() {
-        this.cardNumber = cg.newCard;
-        this.cardPin = cg.newPin;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCardPin(String cardPin) {
-        this.cardPin = cardPin;
+    public void setEmail(String email) {
+        this.email = email;
     }
     
-    
-    // getters
-    public String getCardNumber(){
-        return this.cardNumber;
-        
-    }
-    
-    public String getCardPin(){
-        return this.cardPin;
-    }
-    
-    
-    public class CardGenerator{ //inner class for the card generator
-        
-        Random cardGen = new Random();
-       
-        String newCard = cardNum();
-        String newPin = cardPin();
-        
-        
-        
-        public String cardNum(){
-            
-            String numGen = "4"; //Visa cards always starts with "4"
-                        
-            for(int i = 0; i<15;i++){
-            numGen = numGen + cardGen.nextInt(10);
-            }
-            
-//            System.out.println(numGen);
-            
-            return numGen;
-            
-        }
-        
-        public String cardPin(){
-            
-            String pinGen = "";
-        
-            for(int i = 0; i<3;i++){
-            pinGen = pinGen + cardGen.nextInt(10);
-            }
-            
-//            System.out.println(pinGen);
-            
-            return pinGen;
-            
-        }
-        
-            
-            
-        
-        
-        
-        
-        
-    }
     
 }

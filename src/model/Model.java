@@ -17,6 +17,8 @@ import java.sql.Statement;
  */
 public class Model {
     
+    int countResult;
+    
     //counts the search through name results
     public int countSearchTitle(Movies search){
         
@@ -66,7 +68,7 @@ public class Model {
     {
         
         int countMovie = countSearchTitle(search);
-        String[][] searchMovieResult = new String[countMovie][4];
+        String[][] searchMovieResult = new String[countMovie][5];
 
         try
         {
@@ -81,7 +83,7 @@ public class Model {
             Statement stmt = conn.createStatement();
             
             //takes the name and locaion information
-            String[][] searchMovie = new String[countMovie][4];
+            String[][] searchMovie = new String[countMovie][5];
 
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
@@ -92,6 +94,7 @@ public class Model {
                 searchMovie[row][0] = rs.getString("movie_title");
                 searchMovie[row][1] = rs.getString("movie_genre");
                 searchMovie[row][2] = rs.getString("release_year");
+                searchMovie[row][3] = rs.getString("movie_code");
                 num_avail = rs.getInt("num_avail");
                 if(num_avail>0){
                     
@@ -130,7 +133,7 @@ public class Model {
     
     
     //assigns a card number to a customer
-    public boolean UserCard(User cardDetails)
+    public boolean UserCard(Card cardDetails)
     {
         boolean result = false;
         
@@ -140,7 +143,7 @@ public class Model {
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
             String update = "INSERT INTO movie_customers (card_num,card_pin)" +
-                    "VALUES ('"+cardDetails.cardNumber+"','"+cardDetails.cardPin+"');";
+                    "VALUES ('"+cardDetails.getCardDetails()[0]+"','"+cardDetails.getCardDetails()[1]+"');";
 
             //Get a connection to the database
             Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
@@ -177,7 +180,7 @@ public class Model {
     }
     
     //check if there's a much of the pin
-    public int countPin(User pin){
+    public int countPin(Card pin){
         
         int countResult = 0;
         
@@ -187,7 +190,7 @@ public class Model {
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
 //            String countQuery = "select count(*) from barbers where full_name like '%" + search.getSearchBarber() + "%';"; 
-            String countQuery = "Select count(*) from movie_customers where card_pin like '" + pin.cardPin + "'";
+            String countQuery = "Select count(*) from movie_customers where card_pin like '" + pin.getCardDetails()[1] + "'";
             
             Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
             
@@ -223,7 +226,7 @@ public class Model {
     
     
     //checks for a match of pin
-    public String[] checkPin(User pin)
+    public String[] checkPin(Card pin)
     {
         
 //        int countMovie = countSearchTitle(search);
@@ -234,7 +237,7 @@ public class Model {
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
-            String searchQuery = "Select * from movie_customers where card_pin like '%" + pin.cardPin + "%'";
+            String searchQuery = "Select * from movie_customers where card_pin like '%" + pin.getCardDetails()[1] + "%'";
             
 
             Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
@@ -278,4 +281,116 @@ public class Model {
         return checkPin;
     }
     
+    //counts the search through name results
+    public int allMoviesCount(){
+        
+        countResult = 0;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+//            String countQuery = "select count(*) from barbers where full_name like '%" + search.getSearchBarber() + "%';"; 
+            String countQuery = "Select count(*) from movie_list";
+            
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(countQuery);
+            rs.next();
+            countResult = rs.getInt(1);
+            
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+   
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return countResult;
+    }
+    
+    //search for a match on movie title
+    public String[][] allMovies() 
+    {
+        
+        int allMoviesCount = countResult;
+        String[][] searchMovieResult = new String[allMoviesCount][6];
+
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String searchQuery = "Select * from movie_list order by movie_title";
+            
+
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            //takes the name and locaion information
+            String[][] searchMovie = new String[allMoviesCount][6];
+
+            ResultSet rs = stmt.executeQuery(searchQuery);
+            int row = 0;
+            
+            int num_avail;
+            while (rs.next()) {                     
+                
+                searchMovie[row][0] = rs.getString("movie_title");
+                searchMovie[row][1] = rs.getString("movie_genre");
+                searchMovie[row][2] = rs.getString("release_year");
+                searchMovie[row][3] = rs.getString("num_avail");
+                searchMovie[row][4] = rs.getString("num_rented");
+                searchMovie[row][5] = rs.getString("movie_code");
+//                num_avail = rs.getInt("num_avail");
+//                if(num_avail>0){
+//                    
+//                    searchMovie[row][6] = rs.getString("num_avail");
+//                     
+//                }else{System.out.println("Not Avaialble");}
+                row++;
+                
+            }
+            
+            searchMovieResult = searchMovie;
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return searchMovieResult;
+    }
 }
