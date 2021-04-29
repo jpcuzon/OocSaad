@@ -7,6 +7,7 @@ package view;
 
 import controller.ViewController;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -41,8 +42,12 @@ public class View extends JFrame {
     JFrame faq;
     JPanel p1;
     JTextField searchBar;
+    JPanel panel1;
+    JPanel movieSection;
+    CardLayout movieSectionL;
     
     Font txt;
+    Font txt1;
     
     ScrollPane sp;
     
@@ -123,174 +128,100 @@ public class View extends JFrame {
             BorderLayout mainLayout = new BorderLayout();
             main.setLayout(mainLayout);
             
-        txt = new Font("Arial Black", Font.PLAIN,15);
+        txt = new Font("Arial Black", Font.PLAIN,18);
         main.add(searchBar(), BorderLayout.PAGE_START);   
-        main.add(categories(), BorderLayout.LINE_START);  
-    
-//        //top panel (search bar, never change)
-//        JPanel search = new JPanel();
-//            main.add(search, BorderLayout.PAGE_START);
-//            search.setBackground(new Color(160,0,0));
-//            GridLayout searchGrid = new GridLayout(1,4);
-//                search.setLayout(searchGrid);
-//                
-//            //image    
-//            ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
-//                logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
-//                JButton logo = new JButton();
-//            logo.setIcon(logoxtra); //button with image needs design fix
-//                logo.addActionListener(viewController);
-//                logo.setActionCommand("logo");
-//                search.add(logo);
-//                
-//            JTextField searchBar = new JTextField();
-//                search.add(searchBar);   
-//            JButton searchButton = new JButton("Search");
-//                search.add(searchButton);
-//            JButton cart = new JButton("My Cart");
-//                search.add(cart);
-//     
-//            //left panel (movies categories, also never change)
-//            JPanel categories = new JPanel();
-//                categories.setBackground(new Color(160,0,0));
-//            main.add(categories, BorderLayout.LINE_START);
-//            
-//            GridLayout menuGrid = new GridLayout(13,1);
-//                categories.setLayout(menuGrid);
-//                
-//            JLabel cate = new JLabel("Categories");
-//                cate.setFont(txt);
-//                cate.setForeground(new Color(255, 228, 0)); 
-//                categories.add(cate);
-//                
-//            JButton action = new JButton("Action and Adventure");
-//            JButton comedy = new JButton("Comedy");
-//            JButton drama = new JButton("Drama");
-//            JButton fantasy = new JButton("Fantasy");
-//            JButton horror = new JButton("Horror");
-//            JButton mystery = new JButton("Mystery");
-//            JButton romance = new JButton("Romance");
-//            JButton scifi = new JButton("Sci-Fi");
-//            JButton thriller = new JButton("Trhiller");
-//            JButton western = new JButton("Western");
-//            
-//                categories.add(action);
-//                categories.add(comedy);
-//                categories.add(drama);
-//                categories.add(fantasy);
-//                categories.add(horror);
-//                categories.add(mystery);
-//                categories.add(romance);
-//                categories.add(scifi);
-//                categories.add(thriller);
-//                categories.add(western);
-//            
-//            JLabel hiw = new JLabel("How it Works?");
-//                hiw.setFont(txt);
-//                hiw.setForeground(new Color(255, 228, 0)); 
-//                categories.add(hiw);
-//                
-//            JButton faq = new JButton("FAQ");
-//            faq.addActionListener(viewController);
-//            faq.setActionCommand("faq");
-//                categories.add(faq);
-//                
-//                
-//        //first panel (this will be the one that change) 
-//        JPanel p1 = new JPanel();
-//            main.add(p1, BorderLayout.CENTER);
-//        GridLayout gridP1 = new GridLayout(2,1);
-//            p1.setLayout(gridP1);
-//       
-//        //panel for the movies
-//        Font titletxt = new Font("Arial Black", Font.PLAIN,25);
-//        JPanel arrival = new JPanel();
-//            p1.add(arrival);
-//            BorderLayout arrB = new BorderLayout();
-//                arrival.setLayout(arrB);
-//        JLabel arr = new JLabel("New Arrival");
-//            arr.setFont(titletxt);
-//            arrival.add(arr, BorderLayout.PAGE_START);
-//        
-//        JPanel arrMovies = new JPanel();
-//            GridLayout moviesArr = new GridLayout(2,3);
-//            arrMovies.setLayout(moviesArr);
-//            arrival.add(arrMovies);
-//        //images
-//        ImageIcon it = new ImageIcon(getClass().getResource("it.jpg"));
-//            it.setImage(it.getImage().getScaledInstance(110, 200, 100));
-//            JLabel itt = new JLabel(it);
-//        
-//        ImageIcon pokemon = new ImageIcon(getClass().getResource("pokemon.jpg"));
-//            pokemon.setImage(pokemon.getImage().getScaledInstance(110, 200, 100));
-//            JLabel poke = new JLabel(pokemon);
-//            
-//        ImageIcon ww = new ImageIcon(getClass().getResource("ww.jpg"));
-//            ww.setImage(ww.getImage().getScaledInstance(110, 200, 100));
-//            JLabel wow = new JLabel(ww);
-//            
-//        //Adding the images on the panel    
-//            arrMovies.add(itt);
-//            arrMovies.add(poke);
-//            arrMovies.add(wow);
-//          
-//        //Adding the titles
-//        JLabel itTitle = new JLabel("IT: Chapter II");
-//            arrMovies.add(itTitle);
-//        JLabel pokeTitle = new JLabel("Detective Pikachu");
-//            arrMovies.add(pokeTitle);
-//        JLabel wwTitle = new JLabel("Wonder Woman 1984");
-//            arrMovies.add(wwTitle);
-//            
-//        //coming soon panel
-//        JPanel soon = new JPanel();
-//            p1.add(soon);
-//        
-//        BorderLayout soonB = new BorderLayout();
-//            soon.setLayout(arrB);
-//        JLabel coming = new JLabel("Coming Soon");
-//            coming.setFont(titletxt);     
-//        soon.add(coming, BorderLayout.PAGE_START);
-//        
-//        JPanel soonM = new JPanel();
-//        GridLayout soongrid = new GridLayout(2,3);
-//        soonM.setLayout(soongrid);
-//            soon.add(soonM);
-//            
-//        //images
-//        ImageIcon rct = new ImageIcon(getClass().getResource("rocktman.jpg"));
-//            rct.setImage(rct.getImage().getScaledInstance(110, 200, 100));
-//            JLabel rockt = new JLabel(rct);
-//            
-//        ImageIcon aladdin = new ImageIcon(getClass().getResource("aladdin.png"));
-//            aladdin.setImage(aladdin.getImage().getScaledInstance(110, 200, 100));
-//            JLabel ala = new JLabel(aladdin);
-//            
-//        ImageIcon godzilla = new ImageIcon(getClass().getResource("godzilla.png"));
-//            godzilla.setImage(godzilla.getImage().getScaledInstance(110, 200, 100));
-//            JLabel godz = new JLabel(aladdin);
-//            
-//        //adding the images
-//        soonM.add(rockt);
-//        soonM.add(ala);
-//        soonM.add(godz);
-//        
-//        //titles
-//        JLabel rctTitle = new JLabel("Rocktman");
-//            soonM.add(rctTitle);
-//        JLabel alaTitle = new JLabel("Aladdin");
-//            soonM.add(alaTitle);
-//        JLabel godzTitle = new JLabel("Godzilla: King of the Monsters");
-//            soonM.add(godzTitle);   
+        main.add(categories(), BorderLayout.LINE_START);    
 
-        JPanel movieSection = new JPanel();
-        movieSection.setLayout(new BoxLayout(movieSection, BoxLayout.Y_AXIS)); ///////////////////////////
+        movieSectionL = new CardLayout(); //cardlayout manager
+        movieSection = new JPanel();
+        movieSection.setLayout(movieSectionL);
         main.add(movieSection,BorderLayout.CENTER);
+        movieSection.add(moviePanel(),"moviesHome");
+
+//        movieSection = new JPanel();
+//        movieSection.setLayout(new BoxLayout(movieSection, BoxLayout.Y_AXIS)); ///////////////////////////
+//        main.add(movieSection,BorderLayout.CENTER);
+//        movieSection.add(moviePanel());
         
-        BorderLayout movieL = new BorderLayout();
+//        BorderLayout movieL = new BorderLayout();
+//        JPanel moviePanel = new JPanel();
+//            moviePanel.setLayout(movieL);
+//            movieSection.add(moviePanel);
+//        
+//        JPanel moviePanelHeader = new JPanel();  //contains the "New Arrivals, etc" as well as the sort buttons
+//        moviePanel.add(moviePanelHeader,BorderLayout.NORTH);
+//            String[] sortOption = {"Name","Popularity","Genre","Release Date"};
+//            JComboBox sort = new JComboBox(sortOption);
+//            JButton sortConfirm = new JButton("Sort");
+//            moviePanelHeader.add(sort);
+//            moviePanelHeader.add(sortConfirm);
+//        
+//        sp = new ScrollPane();
+//        GridLayout movieListL = new GridLayout(0,5); //makes the grid to have 5 rows and dynamic number of columns
+//        JPanel movieListP = new JPanel();  //panel for the movie list (images and title tiles
+//            movieListP.setLayout(movieListL);
+//            moviePanel.add(sp, BorderLayout.CENTER);
+//            sp.add(movieListP);
+//            
+////        JPanel movieLoop = new JPanel();
+////        movieListP.add(movieLoop);
+//        
+//        countResult = viewController.getAllMovieCount();
+//        countIndex = 0; //initialized the count index
+//        
+//        JPanel[] movieArray = new JPanel[countResult];
+//        
+//        if(countResult == 0){
+//            System.out.println("No movies found"); //will change later
+//        }
+//        else{
+//            for(int i=0;i<countResult;i++){
+//                
+//                movieArray[i] = new JPanel();
+//                JPanel movieTile = new JPanel();
+////                movieTile.setBorder(new EmptyBorder(10,10,10,10));
+//                    JPanel movieDetails = new JPanel();
+//                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
+//                    movieTile.add(movieDetails);
+//                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getAllMovies()[i][5]+".jpg"));
+//                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+//                        JLabel itt = new JLabel(movieImage);
+//                        movieDetails.add(itt);
+//                        JLabel movieTitle = new JLabel(viewController.getAllMovies()[i][0] + " ("+viewController.getAllMovies()[i][2]+")");
+//                        movieDetails.add(movieTitle);
+//                        JLabel movieGenre = new JLabel(viewController.getAllMovies()[i][1]);
+//                        movieDetails.add(movieGenre);
+//                        JButton rentB = new JButton("RENT");
+//                        movieDetails.add(rentB);
+//                
+//                
+//                        
+//                        
+//              movieArray[i].add(movieTile);
+//              movieListP.add(movieArray[i]);
+//            }
+//        }
+//        =====================================================================================================
+
+        txt1 = new Font("Arial Black", Font.BOLD, 30);
+
+                
+        
+
+        
+        main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        main.validate();
+        main.repaint();      
+        
+        
+            
+}
+    
+    public JPanel moviePanel() {
+    BorderLayout movieL = new BorderLayout();
         JPanel moviePanel = new JPanel();
             moviePanel.setLayout(movieL);
-            movieSection.add(moviePanel);
+//            movieSection.add(moviePanel);
         
         JPanel moviePanelHeader = new JPanel();  //contains the "New Arrivals, etc" as well as the sort buttons
         moviePanel.add(moviePanelHeader,BorderLayout.NORTH);
@@ -345,16 +276,72 @@ public class View extends JFrame {
               movieListP.add(movieArray[i]);
             }
         }
-        
-
-        
-        main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        main.validate();
-        main.repaint();      
-        
-        
-            
+        return moviePanel;
 }
+    
+    public JPanel movieCategories() {
+    BorderLayout movieL = new BorderLayout();
+        JPanel movieCategories = new JPanel();
+            movieCategories.setLayout(movieL);
+//            movieSection.add(moviePanel);
+        
+        JPanel moviePanelHeader = new JPanel();  //contains the "New Arrivals, etc" as well as the sort buttons
+        movieCategories.add(moviePanelHeader,BorderLayout.NORTH);
+            String[] sortOption = {"Name","Popularity","Genre","Release Date"};
+            JComboBox sort = new JComboBox(sortOption);
+            JButton sortConfirm = new JButton("Sort");
+            moviePanelHeader.add(sort);
+            moviePanelHeader.add(sortConfirm);
+        
+        sp = new ScrollPane();
+        GridLayout movieListL = new GridLayout(0,5); //makes the grid to have 5 rows and dynamic number of columns
+        JPanel movieListP = new JPanel();  //panel for the movie list (images and title tiles
+            movieListP.setLayout(movieListL);
+            movieCategories.add(sp, BorderLayout.CENTER);
+            sp.add(movieListP);
+            
+//        JPanel movieLoop = new JPanel();
+//        movieListP.add(movieLoop);
+        
+        countResult = viewController.getCategoriesCount();
+        countIndex = 0; //initialized the count index
+        
+        JPanel[] movieArray = new JPanel[countResult];
+        
+        if(countResult == 0){
+            System.out.println("No movies found"); //will change later
+        }
+        else{
+            for(int i=0;i<countResult;i++){
+                
+                movieArray[i] = new JPanel();
+                JPanel movieTile = new JPanel();
+//                movieTile.setBorder(new EmptyBorder(10,10,10,10));
+                    JPanel movieDetails = new JPanel();
+                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
+                    movieTile.add(movieDetails);
+                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getCategoriesResult()[i][5]+".jpg"));
+                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+                        JLabel itt = new JLabel(movieImage);
+                        movieDetails.add(itt);
+                        JLabel movieTitle = new JLabel(viewController.getCategoriesResult()[i][0] + " ("+viewController.getCategoriesResult()[i][2]+")");
+                        movieDetails.add(movieTitle);
+                        JLabel movieGenre = new JLabel(viewController.getCategoriesResult()[i][1]);
+                        movieDetails.add(movieGenre);
+                        JButton rentB = new JButton("RENT");
+                        movieDetails.add(rentB);
+                
+                
+                        
+                        
+              movieArray[i].add(movieTile);
+              movieListP.add(movieArray[i]);
+            }
+        }
+        return movieCategories;
+}
+    
+    
     //return frame
     public void returnn(){
         returnn = new JFrame();
@@ -363,73 +350,72 @@ public class View extends JFrame {
             returnn.setTitle("Xtra Vision");
             BorderLayout welcomeLayout = new BorderLayout();
             returnn.setLayout(welcomeLayout);
-            
-                    JPanel search = new JPanel();
-            returnn.add(search, BorderLayout.PAGE_START);
-            search.setBackground(new Color(160,0,0));
-            GridLayout searchGrid = new GridLayout(1,4);
-                search.setLayout(searchGrid);
-        //image    
-        ImageIcon logoxtra = new ImageIcon(getClass().getResource("images/logoxtravision.png"));        
-            logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
-            JButton logo = new JButton();
-            logo.setIcon(logoxtra); //button with image needs design fix
-                logo.addActionListener(viewController);
-                logo.setActionCommand("logo");
-                search.add(logo);
-                
-            JTextField searchBar = new JTextField();
-                search.add(searchBar);   
-            JButton searchButton = new JButton("Search");
-                search.add(searchButton);
-            JButton cart = new JButton("My Cart");
-                search.add(cart);
+            returnn.add(searchBar(), BorderLayout.PAGE_START);
+
     }  
     
     //faq frame
     public void faq(){
-        String[] questions={"Questions","Answers"};
-        String[][] answers={{"How long can I keep the movie?","You can keep the movie for 3 days"},
-                {"How much cost each movie?","Each movie costs £3,99"},
-                {"Why do I need to pay a security deposit?","We change a security deposit in case any damage cause on the disk, scretches for example"},
-                {"How much is the security deposit?","The security desposit is £7,99"},
-                {"What happen if I do not return the disk?","We will automatically charge on your credit card the security deposit"}};
-        
         faq = new JFrame();
             faq.setVisible(true);
-            faq.setSize(600, 600);
+            faq.setSize(1600, 900);
             faq.setTitle("Xtra Vision");
-            BorderLayout welcomeLayout = new BorderLayout();
-            faq.setLayout(welcomeLayout);
+            BorderLayout faqBorder = new BorderLayout();
+            faq.setLayout(faqBorder);
+            ImageIcon logoxtra = new ImageIcon(getClass().getResource("images/logoxtravision.png"));        
+                logoxtra.setImage(logoxtra.getImage().getScaledInstance(1350, 175, 100));    
+                JLabel logo = new JLabel(logoxtra);
+                    faq.add(logo, BorderLayout.PAGE_START);
+        
+        JPanel faqP1 = new JPanel();
+        GridLayout faqGrid = new GridLayout(5, 2);
+        faqP1.setLayout(faqGrid);
+            faq.add(faqP1, BorderLayout.CENTER);
+        
+        JLabel q1 = new JLabel("How long can I keep the movie?");
+            q1.setFont(txt1);
+            faqP1.add(q1);
+        JLabel a1 = new JLabel("You can keep the movie for 3 days");
+            a1.setFont(txt);
+            faqP1.add(a1);
             
-                    JPanel search = new JPanel();
-            faq.add(search, BorderLayout.PAGE_START);
-            search.setBackground(new Color(160,0,0));
-            GridLayout searchGrid = new GridLayout(1,4);
-                search.setLayout(searchGrid);
-        //image    
-        ImageIcon logoxtra = new ImageIcon(getClass().getResource("logoxtravision.png"));        
-            logoxtra.setImage(logoxtra.getImage().getScaledInstance(150, 45, 100));    
-            JButton logo = new JButton();
-            logo.setIcon(logoxtra); //button with image needs design fix
-                logo.addActionListener(viewController);
-                logo.setActionCommand("logo");
-                search.add(logo);
-                
-            JTextField searchBar = new JTextField();
-                search.add(searchBar);   
-            JButton searchButton = new JButton("Search");
-                search.add(searchButton);
-            JButton cart = new JButton("My Cart");
-                search.add(cart);
-                
-        //panel for the questions and answers
-        JPanel p1 = new JPanel();
-            faq.add(p1, BorderLayout.CENTER);
-           
-        JTable qaa = new JTable(answers,questions);
-        JScrollPane qaaScroll = new JScrollPane(qaa);
-            faq.add(qaa);
+        JLabel q2 = new JLabel("How much cost each movie?");
+            q2.setFont(txt1);
+            faqP1.add(q2);
+        JLabel a2 = new JLabel("Each movie costs £3,99");
+            a2.setFont(txt);
+            faqP1.add(a2);
+        
+        JLabel q3 = new JLabel("What happen if I do not return the disk?");
+            q3.setFont(txt1);
+            faqP1.add(q3);
+        JLabel a3 = new JLabel("We will automatically charge on your credit card the security deposit");
+            a3.setFont(txt);
+            faqP1.add(a3);
+            
+        JLabel q4 = new JLabel("Why do I need to pay a security deposit?");
+            q4.setFont(txt1);
+            faqP1.add(q4);
+        JLabel a4 = new JLabel("We change a security deposit in case any damage cause on the disk, scretches for example");
+            a4.setFont(txt);
+            faqP1.add(a4);
+            
+        JLabel q5 = new JLabel("How much is the security deposit?");
+            q5.setFont(txt1);
+            faqP1.add(q5);
+        JLabel a5 = new JLabel("The security desposit is £7,99");
+            a5.setFont(txt);
+            faqP1.add(a5);
+        JButton back = new JButton("Back");
+            back.addActionListener(viewController);
+            back.setActionCommand("back");
+            faq.add(back, BorderLayout.PAGE_END);
+            
+            
+            
+        faq.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        faq.validate();
+        faq.repaint();
                 
           
     }
@@ -478,15 +464,35 @@ public class View extends JFrame {
             categories.add(cate);
 
         JButton action = new JButton("Action and Adventure");
+            action.addActionListener(viewController);
+            action.setActionCommand("action");
         JButton comedy = new JButton("Comedy");
+            comedy.addActionListener(viewController);
+            comedy.setActionCommand("comedy");
         JButton drama = new JButton("Drama");
+            drama.addActionListener(viewController);
+            drama.setActionCommand("drama");
         JButton fantasy = new JButton("Fantasy");
+            fantasy.addActionListener(viewController);
+            fantasy.setActionCommand("fantasy");
         JButton horror = new JButton("Horror");
+            horror.addActionListener(viewController);
+            horror.setActionCommand("horror");
         JButton mystery = new JButton("Mystery");
+            mystery.addActionListener(viewController);
+            mystery.setActionCommand("mystery");
         JButton romance = new JButton("Romance");
+            romance.addActionListener(viewController);
+            romance.setActionCommand("romance");
         JButton scifi = new JButton("Sci-Fi");
+            scifi.addActionListener(viewController);
+            scifi.setActionCommand("scifi");
         JButton thriller = new JButton("Trhiller");
+            thriller.addActionListener(viewController);
+            thriller.setActionCommand("thriller");
         JButton western = new JButton("Western");
+            western.addActionListener(viewController);
+            western.setActionCommand("western");
 
             categories.add(action);
             categories.add(comedy);
@@ -505,6 +511,8 @@ public class View extends JFrame {
             categories.add(hiw);
 
         JButton faq = new JButton("FAQ");
+            faq.addActionListener(viewController);
+            faq.setActionCommand("faq");
             categories.add(faq);
                 
         return categories;
@@ -520,9 +528,29 @@ public class View extends JFrame {
         return welcome;
     }
 
+    public JFrame getMain() {
+        return main;
+    }
+
     public JTextField getSearchBar() {
         return searchBar;
     }
+
+    public JFrame getFaq() {
+        return faq;
+    }
+
+    public JPanel getMovieSection() {
+        return movieSection;
+    }
+
+    public CardLayout getMovieSectionL() {
+        return movieSectionL;
+    }
+
+    
+    
+    
     
     
     

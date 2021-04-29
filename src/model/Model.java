@@ -393,4 +393,255 @@ public class Model {
         
         return searchMovieResult;
     }
+    
+    
+    public int categoriesMoviesCount(String categories) 
+    {
+        
+        countResult=0;
+        
+        String cateTypes = categories;
+        String searchQuery=null;
+        System.out.println("count result"+ cateTypes);
+        switch(cateTypes){
+            case "action": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='action' or movie_genre='adventure'"; break;
+            case "comedy": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre ='comedy'";break;
+            case "drama": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='drama'";break;
+            case "fantasy": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='fantasy'";break;
+            case "horror": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='horror'";break;
+            case "mystery": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='mystery'";break;
+            case "romance": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='romance'";break;
+            case "scifi": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='sci-fi'";break;
+            case "thriller": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='thriller'";break;
+            case "western": searchQuery = "SELECT count(*) FROM movie_list WHERE movie_genre='western'";break;
+        }
+        try
+        {
+//            String searchQuery=null;
+//            String sortType = sort.getSortOrder();
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+
+            System.out.println("Sort Type: "+cateTypes+" Query: "+searchQuery);
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            //takes the name and locaion information
+//            String[][] cateList = new String[countResult][6];
+
+            ResultSet rs = stmt.executeQuery(searchQuery);
+//            int row = 0;
+//            
+//            int num_avail;
+            rs.next();
+            countResult=rs.getInt(1);
+//            while (rs.next()) {                     
+//                
+//                cateList[row][0] = rs.getString("movie_title");
+//                cateList[row][1] = rs.getString("movie_genre");
+//                cateList[row][2] = rs.getString("release_year");
+//                cateList[row][3] = rs.getString("num_avail");
+//                cateList[row][4] = rs.getString("num_rented");
+//                cateList[row][5] = rs.getString("movie_code");
+//                num_avail = rs.getInt("num_avail");
+//                if(num_avail>0){
+//                    
+//                    searchMovie[row][6] = rs.getString("num_avail");
+//                     
+//                }else{System.out.println("Not Avaialble");}
+//                row++;
+                
+//            }
+            
+//            cateResult = cateList;
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return countResult;
+    }
+    
+    
+    
+    
+    
+    public String[][] categoriesMovies(String categories) 
+    {
+        
+        int allMoviesCount = countResult;
+        String[][] cateResult = new String[allMoviesCount][6];
+        String cateTypes = categories;
+        String searchQuery=null;
+        switch(cateTypes){
+            case "action": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='action' or movie_genre='adventure'"; break;
+            case "comedy": searchQuery = "SELECT * FROM movie_list WHERE movie_genre ='comedy'";break;
+            case "drama": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='drama'";break;
+            case "fantasy": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='fantasy'";break;
+            case "horror": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='horror'";break;
+            case "mystery": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='mystery'";break;
+            case "romance": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='romance'";break;
+            case "scifi": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='sci-fi'";break;
+            case "thriller": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='thriller'";break;
+            case "western": searchQuery = "SELECT * FROM movie_list WHERE movie_genre='western'";break;
+        }
+        try
+        {
+//            String searchQuery=null;
+//            String sortType = sort.getSortOrder();
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+
+            System.out.println("Sort Type: "+cateTypes+" Query: "+searchQuery);
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            //takes the name and locaion information
+            String[][] cateList = new String[allMoviesCount][6];
+
+            ResultSet rs = stmt.executeQuery(searchQuery);
+            int row = 0;
+            
+            int num_avail;
+            while (rs.next()) {                     
+                
+                cateList[row][0] = rs.getString("movie_title");
+                cateList[row][1] = rs.getString("movie_genre");
+                cateList[row][2] = rs.getString("release_year");
+                cateList[row][3] = rs.getString("num_avail");
+                cateList[row][4] = rs.getString("num_rented");
+                cateList[row][5] = rs.getString("movie_code");
+//                num_avail = rs.getInt("num_avail");
+//                if(num_avail>0){
+//                    
+//                    searchMovie[row][6] = rs.getString("num_avail");
+//                     
+//                }else{System.out.println("Not Avaialble");}
+                row++;
+                
+            }
+            
+            cateResult = cateList;
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return cateResult;
+    }
+    
+    
+    
+//    sorts the search results
+//    public String[][] searchTitleSort(String search, String sort)
+//    {
+//        
+//        int countMovie = countSearchTitle(search);
+//        String[][] searchMovieResult = new String[countMovie][6];
+//        String sortType = sort;
+//        String searchQuery=null;
+//        switch(sortType){
+//            case "Name": searchQuery = "Select * from movie_list where movie_title like '%" + search + "%'" + " order by movie_title";break;
+//            case "Popularity": searchQuery = "Select * from movie_list where movie_title like '%" + search + "%'" + " order by num_rented";break;
+//            case "Genre": searchQuery = "Select * from movie_list where movie_title like '%" + search + "%'" + " order by movie_genre";break;
+//            case "Release Date": searchQuery = "Select * from movie_list where movie_title like '%" + search + "%'" + " order by release_year";break;
+//        }
+//            
+//        try
+//        {
+//            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+//            String dbUser = "Jon_2019395";
+//            String dbPassword = "2019395";
+////            String searchQuery = "Select * from movie_list where movie_title like '%" + search + "%'";
+//            
+//
+//            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+//            
+//            Statement stmt = conn.createStatement();
+//            
+//            //takes the name and locaion information
+//            String[][] searchMovie = new String[countMovie][6];
+//
+//            ResultSet rs = stmt.executeQuery(searchQuery);
+//            int row = 0;
+//            
+//            int num_avail;
+//            while (rs.next()) {                     
+//                
+//                searchMovie[row][0] = rs.getString("movie_title");
+//                searchMovie[row][1] = rs.getString("movie_genre");
+//                searchMovie[row][2] = rs.getString("release_year");
+//                searchMovie[row][3] = rs.getString("num_avail");
+//                searchMovie[row][4] = rs.getString("num_rented");
+//                searchMovie[row][5] = rs.getString("movie_code");
+////                num_avail = rs.getInt("num_avail");
+////                if(num_avail>0){
+////                    
+////                    searchMovie[row][6] = rs.getString("num_avail");
+////                    
+////                }else{System.out.println("Not Avaialble");}
+//                row++;
+//                
+//            }
+//            
+//            searchMovieResult = searchMovie;
+//
+//            // Close the result set, statement and the connection
+//            rs.close();
+//            stmt.close();
+//            conn.close();
+//            
+//        } catch (SQLException se) {
+//            System.out.println("SQL Exception:");
+//
+//            // Loop through the SQL Exceptions
+//            while (se != null) {
+//                System.out.println("State  : " + se.getSQLState());
+//                System.out.println("Message: " + se.getMessage());
+//                System.out.println("Error  : " + se.getErrorCode());
+//
+//                se = se.getNextException();
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//        
+//        return searchMovieResult;
+//    }
 }
