@@ -53,6 +53,7 @@ public class View extends JFrame {
     
     int countResult;
     int countIndex;
+    private String headerLabel; //shows what the user searched/what the movie panel is currently displaying
     
 
     public View(ViewController viewController){  //I honestly don't know why this is needed, I just copied it on Amilcar's code on GUI with the comment below and it removed the error
@@ -546,6 +547,14 @@ public class View extends JFrame {
 
     public CardLayout getMovieSectionL() {
         return movieSectionL;
+    }
+
+    public String getHeaderLabel() {
+        return headerLabel;
+    }
+
+    public void setHeaderLabel(String headerLabel) {
+        this.headerLabel = headerLabel;
     }
 
     

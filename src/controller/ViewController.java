@@ -21,10 +21,15 @@ public class ViewController implements ActionListener {
     Model model;
     
     private int allMovieCount = 0;
-    private String[][] allMovies;
-    String search;
+    int countSearch; //counts the search result
     int categoriesCount;
+    private String[][] allMovies;
+    String[][] searchMovieResult;
+    String[][] moviesActive; // for sorting
     String [][] categoriesResult;
+    String search;
+    
+    
 
     public ViewController (){
       this.view = new View(this);
@@ -39,6 +44,7 @@ public class ViewController implements ActionListener {
             
             allMovieCount = model.allMoviesCount();
             allMovies = model.allMovies();
+            searchMovieResult = null;
             for(int i=0;i<allMovies.length;i++)       //for the rows
                 {
                     for(int j=0;j<6;j++)   //for the columns
@@ -49,22 +55,233 @@ public class ViewController implements ActionListener {
                     System.out.println("");
                 }
             view.getWelcome().dispatchEvent(new WindowEvent(view.getWelcome(), WindowEvent.WINDOW_CLOSING));//disposes the other frame when this frame opens
-//            view.welcome.remove();
             view.main();  
             
         }
         
-        //image as a button, return to welcome screen
-//        if(e.getActionCommand().equals("logo")){
-//            System.out.println("welcome screen");
-//            view.welcome();
-//        }
         //return screen
         if(e.getActionCommand().equals("retur")){
             System.out.println("return a movie");
             view.getWelcome().dispatchEvent(new WindowEvent(view.getWelcome(), WindowEvent.WINDOW_CLOSING));
             view.returnn();
         }
+        
+//        if(e.getActionCommand().equals("search")){
+//            
+//            model = new Model();if(e.getActionCommand().equals("search")){
+//            
+//            model = new Model();
+//
+//            search = view.getSearchBar().getText();
+//            countSearch = model.countSearchTitle(search); //count the results
+//            System.out.println("CS1 "+countSearch);////////////////
+//            
+//            if(search.isBlank() || search.isEmpty())
+//            {
+//                model.allMoviesCount();
+//                allMovies = model.allMovies(); 
+//                searchMovieResult = null;
+//
+//                for(int i=0;i<allMovies.length;i++)       //for the rows
+//                {
+//                    for(int j=0;j<6;j++)   //for the columns
+//                    {
+//                        System.out.println(allMovies[i][j]);         //initalizing the value of squares into 0;
+//
+//                    }  
+//                    System.out.println("");
+//                }
+//                
+//                view.getMovieSectionL().show(view.getMovieSection(), "moviesHome");
+//
+//            }
+//            else{
+//                
+//                System.out.println("CS2 "+countSearch);////////////////
+//                if(countSearch==0)
+//                {
+////                    System.out.println("No Results Found ");
+//
+////                    view.movieSectionL.show(view.movieSection, "searchResult");
+//                }
+//                else
+//                {
+////                    view.getHeaderLabel() = "Search Results for \""+search+"\""; //assign the input into the label
+//                    view.setHeaderLabel("Search Results for \""+search+"\"");
+//                    searchMovieResult = model.searchTitle(search); 
+//                    allMovies = null;
+//
+//                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                    view.getMovieSection().add(view.movieSearchPanel(),"searchResult");
+//                    view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
+//                }
+//                
+//            }
+//        }
+//        
+//        
+//        if(e.getActionCommand().equalsIgnoreCase("sort")){
+//            
+//            moviesActive = null; //container for the sorting function
+//            String active=null;
+//            String sortType = view.sort.getSelectedItem().toString();
+//            
+//            
+//            if(allMovies == null){  //switches the data inside of the container on what data is active.
+//                moviesActive = searchMovieResult;
+//                active = "search";
+//
+//                System.out.println("Search active");
+//            }else if(searchMovieResult == null){
+//                moviesActive = allMovies;
+//                active = "all";
+//                System.out.println("All active");
+//
+//            }
+//            if(active.equalsIgnoreCase("all")){  //Sorts the "All movies" result if the active identifier is "all"
+//                moviesActive = model.allMoviesSort(sortType);
+//                for(int i=0;i<allMovies.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                view.movieSection.add(view.moviePanelSort(),"allMoviesSort");
+//                view.movieSectionL.show(view.movieSection, "allMoviesSort");
+//            }
+//            else if(active.equalsIgnoreCase("search")){  //Sorts the search result if the active identifier is "search"
+//                moviesActive = model.searchTitleSort(search , sortType);
+//                for(int i=0;i<moviesActive.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                view.movieSection.add(view.movieSearchPanelSort(),"searchResult");
+//                view.movieSectionL.show(view.movieSection, "searchResult");
+//            }
+//            
+//        }
+//
+//            search = view.getSearchBar().getText();
+//            countSearch = model.countSearchTitle(search); //count the results
+//            System.out.println("CS1 "+countSearch);////////////////
+//            
+//            if(search.isBlank() || search.isEmpty())
+//            {
+//                model.allMoviesCount();
+//                allMovies = model.allMovies(); 
+//                searchMovieResult = null;
+//
+//                for(int i=0;i<allMovies.length;i++)       //for the rows
+//                {
+//                    for(int j=0;j<6;j++)   //for the columns
+//                    {
+//                        System.out.println(allMovies[i][j]);         //initalizing the value of squares into 0;
+//
+//                    }  
+//                    System.out.println("");
+//                }
+//                
+//                view.getMovieSectionL().show(view.getMovieSection(), "moviesHome");
+//
+//            }
+//            else{
+//                
+//                System.out.println("CS2 "+countSearch);////////////////
+//                if(countSearch==0)
+//                {
+////                    System.out.println("No Results Found ");
+//
+////                    view.movieSectionL.show(view.movieSection, "searchResult");
+//                }
+//                else
+//                {
+////                    view.getHeaderLabel() = "Search Results for \""+search+"\""; //assign the input into the label
+//                    view.setHeaderLabel("Search Results for \""+search+"\"");
+//                    searchMovieResult = model.searchTitle(search); 
+//                    allMovies = null;
+//
+//                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                    view.getMovieSection().add(view.movieSearchPanel(),"searchResult");
+//                    view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
+//                }
+//                
+//            }
+//        }
+//        
+//        
+//        if(e.getActionCommand().equalsIgnoreCase("sort")){
+//            
+//            moviesActive = null; //container for the sorting function
+//            String active=null;
+//            String sortType = view.sort.getSelectedItem().toString();
+//            
+//            
+//            if(allMovies == null){  //switches the data inside of the container on what data is active.
+//                moviesActive = searchMovieResult;
+//                active = "search";
+//
+//                System.out.println("Search active");
+//            }else if(searchMovieResult == null){
+//                moviesActive = allMovies;
+//                active = "all";
+//                System.out.println("All active");
+//
+//            }
+//            if(active.equalsIgnoreCase("all")){  //Sorts the "All movies" result if the active identifier is "all"
+//                moviesActive = model.allMoviesSort(sortType);
+//                for(int i=0;i<allMovies.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                view.movieSection.add(view.moviePanelSort(),"allMoviesSort");
+//                view.movieSectionL.show(view.movieSection, "allMoviesSort");
+//            }
+//            else if(active.equalsIgnoreCase("search")){  //Sorts the search result if the active identifier is "search"
+//                moviesActive = model.searchTitleSort(search , sortType);
+//                for(int i=0;i<moviesActive.length;i++)       //for the rows
+//                    {
+//                        for(int j=0;j<6;j++)   //for the columns
+//                        {
+//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+//
+//                        }  
+//                        System.out.println("");
+//                    }
+//                view.movieSection.add(view.movieSearchPanelSort(),"searchResult");
+//                view.movieSectionL.show(view.movieSection, "searchResult");
+//            }
+//            
+//        }
+        
         
         //FAQ
         if(e.getActionCommand().equals("faq")){
@@ -79,63 +296,6 @@ public class ViewController implements ActionListener {
         }
         
                                                      
-        //=======================================================Test=================================================================\\
-        if(e.getActionCommand().equals("search")){
-            int countSearch;
-            String[][] searchMovieResult;
-            
-            model = new Model();
-
-            search = view.getSearchBar().getText().trim();
-            Movies searchMovie = new Movies(search);
-            
-            if(search.isEmpty())
-            {
-                model.allMoviesCount();
-                searchMovieResult = model.allMovies(); 
-
-                for(int i=0;i<searchMovieResult.length;i++)       //for the rows
-                {
-                    for(int j=0;j<6;j++)   //for the columns
-                    {
-                        System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
-
-                    }  
-                    System.out.println("");
-                }
-
-            }
-            else{
-//                model.countSearchTitle(searchMovie);
-
-                countSearch = model.countSearchTitle(searchMovie); //count the results
-                if(countSearch==0)
-                {
-                    System.out.println("No Results Found");
-//                    view.p1.removeAll(); //removes the dashboard panel for bookings
-//                    view.p1.add(view.noResults());
-                }
-                else
-                {
-                    searchMovieResult = model.searchTitle(searchMovie); 
-
-                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
-                    {
-                        for(int j=0;j<4;j++)   //for the columns
-                        {
-                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
-
-                        }  
-                        System.out.println("");
-                    }
-//                    view.p1.removeAll(); //removes the dashboard panel for bookings
-//                    view.p1.add(view.moviePanels());
-
-                }
-                
-            }
-        }
-        
       //============================= panels with card layout
         
         String categories = null;
