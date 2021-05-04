@@ -77,7 +77,7 @@ public class ViewController implements ActionListener {
             countSearch = model.countSearchTitle(search); //count the results
             System.out.println("CS1 "+countSearch);////////////////
             
-            if(search.isBlank() || search.isEmpty())
+            if(search.isEmpty())
             {
                 model.allMoviesCount();
                 allMovies = model.allMovies(); 
@@ -388,6 +388,14 @@ public class ViewController implements ActionListener {
         
         
         
+        //===========================TEST RENT=============================
+        if(e.getActionCommand().equals("rentB")){
+            view.info();
+        }
+        if(e.getActionCommand().equals("back1")){
+            view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+        }
+    
     }
     
     
