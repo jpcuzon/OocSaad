@@ -40,7 +40,8 @@ public class ViewController implements ActionListener {
     //rent movie
     public void actionPerformed(ActionEvent e) {
         
-        if(e.getActionCommand().equals("rent")){
+        //----------------------------------------------------going to main panel----------------------------------------------------\\
+        if(e.getActionCommand().equals("goMain")){
             
             allMovieCount = model.allMoviesCount();
             allMovies = model.allMovies();
@@ -60,229 +61,123 @@ public class ViewController implements ActionListener {
         }
         
         //return screen
+        //----------------------------------------------------return----------------------------------------------------\\
         if(e.getActionCommand().equals("retur")){
             System.out.println("return a movie");
             view.getWelcome().dispatchEvent(new WindowEvent(view.getWelcome(), WindowEvent.WINDOW_CLOSING));
             view.returnn();
         }
         
-//        if(e.getActionCommand().equals("search")){
-//            
-//            model = new Model();if(e.getActionCommand().equals("search")){
-//            
-//            model = new Model();
-//
-//            search = view.getSearchBar().getText();
-//            countSearch = model.countSearchTitle(search); //count the results
-//            System.out.println("CS1 "+countSearch);////////////////
-//            
-//            if(search.isBlank() || search.isEmpty())
-//            {
-//                model.allMoviesCount();
-//                allMovies = model.allMovies(); 
-//                searchMovieResult = null;
-//
-//                for(int i=0;i<allMovies.length;i++)       //for the rows
-//                {
-//                    for(int j=0;j<6;j++)   //for the columns
-//                    {
-//                        System.out.println(allMovies[i][j]);         //initalizing the value of squares into 0;
-//
-//                    }  
-//                    System.out.println("");
-//                }
-//                
-//                view.getMovieSectionL().show(view.getMovieSection(), "moviesHome");
-//
-//            }
-//            else{
-//                
-//                System.out.println("CS2 "+countSearch);////////////////
-//                if(countSearch==0)
-//                {
-////                    System.out.println("No Results Found ");
-//
-////                    view.movieSectionL.show(view.movieSection, "searchResult");
-//                }
-//                else
-//                {
-////                    view.getHeaderLabel() = "Search Results for \""+search+"\""; //assign the input into the label
-//                    view.setHeaderLabel("Search Results for \""+search+"\"");
-//                    searchMovieResult = model.searchTitle(search); 
-//                    allMovies = null;
-//
-//                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                    view.getMovieSection().add(view.movieSearchPanel(),"searchResult");
-//                    view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
-//                }
-//                
-//            }
-//        }
-//        
-//        
-//        if(e.getActionCommand().equalsIgnoreCase("sort")){
-//            
-//            moviesActive = null; //container for the sorting function
-//            String active=null;
-//            String sortType = view.sort.getSelectedItem().toString();
-//            
-//            
-//            if(allMovies == null){  //switches the data inside of the container on what data is active.
-//                moviesActive = searchMovieResult;
-//                active = "search";
-//
-//                System.out.println("Search active");
-//            }else if(searchMovieResult == null){
-//                moviesActive = allMovies;
-//                active = "all";
-//                System.out.println("All active");
-//
-//            }
-//            if(active.equalsIgnoreCase("all")){  //Sorts the "All movies" result if the active identifier is "all"
-//                moviesActive = model.allMoviesSort(sortType);
-//                for(int i=0;i<allMovies.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                view.movieSection.add(view.moviePanelSort(),"allMoviesSort");
-//                view.movieSectionL.show(view.movieSection, "allMoviesSort");
-//            }
-//            else if(active.equalsIgnoreCase("search")){  //Sorts the search result if the active identifier is "search"
-//                moviesActive = model.searchTitleSort(search , sortType);
-//                for(int i=0;i<moviesActive.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                view.movieSection.add(view.movieSearchPanelSort(),"searchResult");
-//                view.movieSectionL.show(view.movieSection, "searchResult");
-//            }
-//            
-//        }
-//
-//            search = view.getSearchBar().getText();
-//            countSearch = model.countSearchTitle(search); //count the results
-//            System.out.println("CS1 "+countSearch);////////////////
-//            
-//            if(search.isBlank() || search.isEmpty())
-//            {
-//                model.allMoviesCount();
-//                allMovies = model.allMovies(); 
-//                searchMovieResult = null;
-//
-//                for(int i=0;i<allMovies.length;i++)       //for the rows
-//                {
-//                    for(int j=0;j<6;j++)   //for the columns
-//                    {
-//                        System.out.println(allMovies[i][j]);         //initalizing the value of squares into 0;
-//
-//                    }  
-//                    System.out.println("");
-//                }
-//                
-//                view.getMovieSectionL().show(view.getMovieSection(), "moviesHome");
-//
-//            }
-//            else{
-//                
-//                System.out.println("CS2 "+countSearch);////////////////
-//                if(countSearch==0)
-//                {
-////                    System.out.println("No Results Found ");
-//
-////                    view.movieSectionL.show(view.movieSection, "searchResult");
-//                }
-//                else
-//                {
-////                    view.getHeaderLabel() = "Search Results for \""+search+"\""; //assign the input into the label
-//                    view.setHeaderLabel("Search Results for \""+search+"\"");
-//                    searchMovieResult = model.searchTitle(search); 
-//                    allMovies = null;
-//
-//                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                    view.getMovieSection().add(view.movieSearchPanel(),"searchResult");
-//                    view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
-//                }
-//                
-//            }
-//        }
-//        
-//        
-//        if(e.getActionCommand().equalsIgnoreCase("sort")){
-//            
-//            moviesActive = null; //container for the sorting function
-//            String active=null;
-//            String sortType = view.sort.getSelectedItem().toString();
-//            
-//            
-//            if(allMovies == null){  //switches the data inside of the container on what data is active.
-//                moviesActive = searchMovieResult;
-//                active = "search";
-//
-//                System.out.println("Search active");
-//            }else if(searchMovieResult == null){
-//                moviesActive = allMovies;
-//                active = "all";
-//                System.out.println("All active");
-//
-//            }
-//            if(active.equalsIgnoreCase("all")){  //Sorts the "All movies" result if the active identifier is "all"
-//                moviesActive = model.allMoviesSort(sortType);
-//                for(int i=0;i<allMovies.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                view.movieSection.add(view.moviePanelSort(),"allMoviesSort");
-//                view.movieSectionL.show(view.movieSection, "allMoviesSort");
-//            }
-//            else if(active.equalsIgnoreCase("search")){  //Sorts the search result if the active identifier is "search"
-//                moviesActive = model.searchTitleSort(search , sortType);
-//                for(int i=0;i<moviesActive.length;i++)       //for the rows
-//                    {
-//                        for(int j=0;j<6;j++)   //for the columns
-//                        {
-//                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
-//
-//                        }  
-//                        System.out.println("");
-//                    }
-//                view.movieSection.add(view.movieSearchPanelSort(),"searchResult");
-//                view.movieSectionL.show(view.movieSection, "searchResult");
-//            }
-//            
-//        }
+        //----------------------------------------------------search----------------------------------------------------\\
+        if(e.getActionCommand().equals("search")){
+            
+            model = new Model();
+
+            search = view.getSearchBar().getText();
+            countSearch = model.countSearchTitle(search); //count the results
+            System.out.println("CS1 "+countSearch);////////////////
+            
+            if(search.isBlank() || search.isEmpty())
+            {
+                model.allMoviesCount();
+                allMovies = model.allMovies(); 
+                searchMovieResult = null;
+
+                for(int i=0;i<allMovies.length;i++)       //for the rows
+                {
+                    for(int j=0;j<6;j++)   //for the columns
+                    {
+                        System.out.println(allMovies[i][j]);         //initalizing the value of squares into 0;
+
+                    }  
+                    System.out.println("");
+                }
+                
+                view.getMovieSectionL().show(view.getMovieSection(), "moviesHome");
+
+            }
+            else{
+                
+                System.out.println("CS2 "+countSearch);////////////////
+                if(countSearch==0)
+                {
+//                    System.out.println("No Results Found ");
+
+//                    view.movieSectionL.show(view.movieSection, "searchResult");
+                }
+                else
+                {
+                    view.setHeaderLabel("Search Results for \""+search+"\""); //assign the input into the label
+                    searchMovieResult = model.searchTitle(search); 
+                    allMovies = null;
+
+                    for(int i=0;i<searchMovieResult.length;i++)       //for the rows
+                    {
+                        for(int j=0;j<6;j++)   //for the columns
+                        {
+                            System.out.println(searchMovieResult[i][j]);         //initalizing the value of squares into 0;
+
+                        }  
+                        System.out.println("");
+                    }
+                    view.getMovieSection().add(view.movieSearchPanel(),"searchResult");
+                    view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
+                }
+                
+            }
+        }
         
-        
+        //----------------------------------------------------sort----------------------------------------------------\\
+        if(e.getActionCommand().equalsIgnoreCase("sort")){
+            
+            moviesActive = null; //container for the sorting function
+            String active=null;
+            String sortType = view.getSort().getSelectedItem().toString();
+            
+            
+            if(allMovies == null){  //switches the data inside of the container on what data is active.
+                moviesActive = searchMovieResult;
+                active = "search";
+
+                System.out.println("Search active");
+            }else if(searchMovieResult == null){
+                moviesActive = allMovies;
+                active = "all";
+                System.out.println("All active");
+
+            }
+            if(active.equalsIgnoreCase("all")){  //Sorts the "All movies" result if the active identifier is "all"
+                moviesActive = model.allMoviesSort(sortType);
+                for(int i=0;i<allMovies.length;i++)       //for the rows
+                    {
+                        for(int j=0;j<6;j++)   //for the columns
+                        {
+                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+
+                        }  
+                        System.out.println("");
+                    }
+                view.getMovieSection().add(view.moviePanelSort(),"allMoviesSort");
+                view.getMovieSectionL().show(view.getMovieSection(), "allMoviesSort");
+            }
+            else if(active.equalsIgnoreCase("search")){  //Sorts the search result if the active identifier is "search"
+                moviesActive = model.searchTitleSort(search , sortType);
+                for(int i=0;i<moviesActive.length;i++)       //for the rows
+                    {
+                        for(int j=0;j<6;j++)   //for the columns
+                        {
+                            System.out.println(moviesActive[i][j]);         //initalizing the value of squares into 0;
+
+                        }  
+                        System.out.println("");
+                    }
+                view.getMovieSection().add(view.movieSearchPanelSort(),"searchResult");
+                view.getMovieSectionL().show(view.getMovieSection(), "searchResult");
+            }
+            
+        }
+
+        //----------------------------------------------------FAQ----------------------------------------------------\\
         //FAQ
         if(e.getActionCommand().equals("faq")){
             System.out.println("FAQ frame for help");
@@ -295,7 +190,8 @@ public class ViewController implements ActionListener {
             view.main();
         }
         
-                                                     
+                                  
+        //----------------------------------------------------Categories----------------------------------------------------\\
       //============================= panels with card layout
         
         String categories = null;
@@ -498,7 +394,7 @@ public class ViewController implements ActionListener {
     
     
     
-    //getters===================================================================================================
+    //----------------------------------------------------getters----------------------------------------------------\\
     //I think we need getters if we call attributes from one package to another so we don't have to
     //make them public, or better we can make them private for encapsulation
 
@@ -517,6 +413,18 @@ public class ViewController implements ActionListener {
 
     public String[][] getCategoriesResult() {
         return categoriesResult;
+    }
+
+    public int getCountSearch() {
+        return countSearch;
+    }
+
+    public String[][] getSearchMovieResult() {
+        return searchMovieResult;
+    }
+
+    public String[][] getMoviesActive() {
+        return moviesActive;
     }
     
     
