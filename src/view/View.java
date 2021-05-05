@@ -60,6 +60,8 @@ public class View extends JFrame {
     int countResult;
     int countIndex;
     private String headerLabel; //shows what the user searched/what the movie panel is currently displaying
+    String[] movieID;
+    String panelActive; //for the rent button
     
 
     public View(ViewController viewController){  //I honestly don't know why this is needed, I just copied it on Amilcar's code on GUI with the comment below and it removed the error
@@ -158,7 +160,8 @@ public class View extends JFrame {
     //card for showing all the movies
     public JPanel moviePanel() {
         
-    BorderLayout movieL = new BorderLayout();
+        panelActive = "movieAll";
+        BorderLayout movieL = new BorderLayout();
         JPanel moviePanel = new JPanel();
             moviePanel.setLayout(movieL);
 //            movieSection.add(moviePanel);
@@ -176,6 +179,7 @@ public class View extends JFrame {
         
         countResult = viewController.getAllMovieCount();
         countIndex = 0; //initialized the count index
+        movieID = new String[countResult];
         
         JPanel[] movieArray = new JPanel[countResult];
         
@@ -201,9 +205,10 @@ public class View extends JFrame {
                         movieDetails.add(movieDate);
                         JLabel movieGenre = new JLabel(viewController.getAllMovies()[i][1]);
                         movieDetails.add(movieGenre);
+                        movieID[i] = viewController.getAllMovies()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rentB");
+                        rentB.setActionCommand("rent"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -219,6 +224,7 @@ public class View extends JFrame {
     //card for showing the search result
     public JPanel movieSearchPanel(){
 
+        panelActive = "movieSearch";
         BorderLayout movieL = new BorderLayout();
         JPanel movieSearchPanel = new JPanel();
             movieSearchPanel.setLayout(movieL);
@@ -237,7 +243,8 @@ public class View extends JFrame {
             
         countResult = viewController.getCountSearch();
         countIndex = 0; //initialized the count index
-        System.out.println("V"+countResult);
+        movieID = new String[countResult];
+        
         JPanel[] movieArray = new JPanel[countResult];
         
 //        if(countResult == 0){
@@ -262,9 +269,10 @@ public class View extends JFrame {
                         movieDetails.add(movieDate);
                         JLabel movieGenre = new JLabel(viewController.getSearchMovieResult()[i][1]);
                         movieDetails.add(movieGenre);
+                        movieID[i] = viewController.getSearchMovieResult()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rentB");
+                        rentB.setActionCommand("rent"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -280,6 +288,7 @@ public class View extends JFrame {
     //card for sorting all the movies
     public JPanel moviePanelSort(){ //View panel for all the movies
         
+        panelActive = "movieSort";
         BorderLayout movieL = new BorderLayout();
         JPanel moviePanelSort = new JPanel();
             moviePanelSort.setLayout(movieL);
@@ -291,9 +300,19 @@ public class View extends JFrame {
             moviePanelSort.add(sp, BorderLayout.CENTER);
             sp.add(movieListP);
             
-
-        countResult = viewController.getAllMovieCount();
+        if(viewController.getActive().equalsIgnoreCase("all")){
+            
+            countResult = viewController.getAllMovieCount();
+            
+        }else if(viewController.getActive().equalsIgnoreCase("search")){
+            
+            countResult = viewController.getCountSearch();
+            
+        }
+        
+        
         countIndex = 0; //initialized the count index
+        movieID = new String[countResult];
         
         JPanel[] movieArray = new JPanel[countResult];
         
@@ -319,9 +338,10 @@ public class View extends JFrame {
                         movieDetails.add(movieDate);
                         JLabel movieGenre = new JLabel(viewController.getMoviesActive()[i][1]);
                         movieDetails.add(movieGenre);
+                        movieID[i] = viewController.getMoviesActive()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rentB");
+                        rentB.setActionCommand("rent"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -337,74 +357,78 @@ public class View extends JFrame {
         return moviePanelSort;
     }
     
-    //card for sorting all the search result
-    public JPanel movieSearchPanelSort(){ //View panel for all the movies
-
-        
-        BorderLayout movieL = new BorderLayout();
-        JPanel movieSearchPanelSort = new JPanel();
-            movieSearchPanelSort.setLayout(movieL);
-            
-        sp = new ScrollPane();
-        GridLayout movieListL = new GridLayout(0,5); //makes the grid to have 5 rows and dynamic number of columns
-        JPanel movieListP = new JPanel();  //panel for the movie list (images and title tiles
-            movieListP.setLayout(movieListL);
-            movieSearchPanelSort.add(sp, BorderLayout.CENTER);
-            sp.add(movieListP);
-            
-        countResult = viewController.getCountSearch();
-        countIndex = 0; //initialized the count index
-        System.out.println("V"+countResult);
-        JPanel[] movieArray = new JPanel[countResult];
-        
-//        if(countResult == 0){
-//            System.out.println("No movies found"); //will change later
-//        }
-//        else{
-            for(int i=0;i<countResult;i++){
-                
-                movieArray[i] = new JPanel();
-                JPanel movieTile = new JPanel();
-//                movieTile.setBorder(new EmptyBorder(10,10,10,10));
-                    JPanel movieDetails = new JPanel();
-                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
-                    movieTile.add(movieDetails);
-                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getMoviesActive()[i][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
-                        JLabel itt = new JLabel(movieImage);
-                        movieDetails.add(itt);
-                        JLabel movieTitle = new JLabel(viewController.getMoviesActive()[i][0]);
-                        movieDetails.add(movieTitle);
-                        JLabel movieDate = new JLabel(viewController.getMoviesActive()[i][2]);
-                        movieDetails.add(movieDate);
-                        JLabel movieGenre = new JLabel(viewController.getMoviesActive()[i][1]);
-                        movieDetails.add(movieGenre);
-                        JButton rentB = new JButton("Info");
-                        rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rentB");
-                        movieDetails.add(rentB);
-                
-                
-                        
-                        
-              movieArray[i].add(movieTile);
-              movieListP.add(movieArray[i]);
-            }
-//        }
-
-        movieSearchPanelSort.add(moviePanelHeader(),BorderLayout.NORTH);
-        
-        return movieSearchPanelSort;
-    }
+//    //card for sorting all the search result
+//    public JPanel movieSearchPanelSort(){ //View panel for all the movies
+//
+//        
+//        BorderLayout movieL = new BorderLayout();
+//        JPanel movieSearchPanelSort = new JPanel();
+//            movieSearchPanelSort.setLayout(movieL);
+//            
+//        sp = new ScrollPane();
+//        GridLayout movieListL = new GridLayout(0,5); //makes the grid to have 5 rows and dynamic number of columns
+//        JPanel movieListP = new JPanel();  //panel for the movie list (images and title tiles
+//            movieListP.setLayout(movieListL);
+//            movieSearchPanelSort.add(sp, BorderLayout.CENTER);
+//            sp.add(movieListP);
+//            
+//        countResult = viewController.getCountSearch();
+//        countIndex = 0; //initialized the count index
+//        movieID = new String[countResult];
+//        
+//        JPanel[] movieArray = new JPanel[countResult];
+//        
+////        if(countResult == 0){
+////            System.out.println("No movies found"); //will change later
+////        }
+////        else{
+//            for(int i=0;i<countResult;i++){
+//                
+//                movieArray[i] = new JPanel();
+//                JPanel movieTile = new JPanel();
+////                movieTile.setBorder(new EmptyBorder(10,10,10,10));
+//                    JPanel movieDetails = new JPanel();
+//                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
+//                    movieTile.add(movieDetails);
+//                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getMoviesActive()[i][5]+".jpg"));
+//                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+//                        JLabel itt = new JLabel(movieImage);
+//                        movieDetails.add(itt);
+//                        JLabel movieTitle = new JLabel(viewController.getMoviesActive()[i][0]);
+//                        movieDetails.add(movieTitle);
+//                        JLabel movieDate = new JLabel(viewController.getMoviesActive()[i][2]);
+//                        movieDetails.add(movieDate);
+//                        JLabel movieGenre = new JLabel(viewController.getMoviesActive()[i][1]);
+//                        movieDetails.add(movieGenre);
+//                        movieID[i] = viewController.getMoviesActive()[i][5];
+//                        JButton rentB = new JButton("Info");
+//                        rentB.addActionListener(viewController);
+//                        rentB.setActionCommand("rent"+movieID[i]);
+//                        movieDetails.add(rentB);
+//                
+//                
+//                        
+//                        
+//              movieArray[i].add(movieTile);
+//              movieListP.add(movieArray[i]);
+//            }
+////        }
+//
+//        movieSearchPanelSort.add(moviePanelHeader(),BorderLayout.NORTH);
+//        
+//        return movieSearchPanelSort;
+//    }
     
     //card for the chosen categories
     public JPanel movieCategories() {
-    BorderLayout movieL = new BorderLayout();
+        
+        panelActive = "movieCategory";
+        BorderLayout movieL = new BorderLayout();
         JPanel movieCategories = new JPanel();
             movieCategories.setLayout(movieL);
 //            movieSection.add(moviePanel);
         
-        movieCategories.add(moviePanelHeader(),BorderLayout.NORTH); //================we should make a different header for categories
+        movieCategories.add(categoryPanelHeader(),BorderLayout.NORTH); //================we should make a different header for categories
 //        JPanel moviePanelHeader = new JPanel();  //contains the "New Arrivals, etc" as well as the sort buttons
 //        movieCategories.add(moviePanelHeader,BorderLayout.NORTH);
 //            String[] sortOption = {"Name","Popularity","Genre","Release Date"};
@@ -425,6 +449,7 @@ public class View extends JFrame {
         
         countResult = viewController.getCategoriesCount();
         countIndex = 0; //initialized the count index
+        movieID = new String[countResult];
         
         JPanel[] movieArray = new JPanel[countResult];
         
@@ -450,9 +475,10 @@ public class View extends JFrame {
                         movieDetails.add(movieDate);
                         JLabel movieGenre = new JLabel(viewController.getCategoriesResult()[i][1]);
                         movieDetails.add(movieGenre);
+                        movieID[i] = viewController.getCategoriesResult()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rentB");
+                        rentB.setActionCommand("rent"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -565,10 +591,10 @@ public class View extends JFrame {
                     search.add(searchButton);
                     searchButton.addActionListener(viewController);
                     searchButton.setActionCommand("search");
-                JButton cart = new JButton("My Cart");
+                JButton cart = new JButton("Home");
                     search.add(cart);
                     cart.addActionListener(viewController);
-                    cart.setActionCommand("cart");
+                    cart.setActionCommand("home");
 
                 
         return search;        
@@ -674,6 +700,22 @@ public class View extends JFrame {
          return moviePanelHeader;    
      }
     
+    public JPanel categoryPanelHeader(){
+ //        GridLayout moviePanelHeaderL = new GridLayout(1,2);
+         JPanel moviePanelHeader = new JPanel();  //contains the "New Arrivals, etc" as well as the sort buttons
+ //        BoxLayout moviePanelHeaderL = new BoxLayout(moviePanelHeader,BoxLayout.X_AXIS);
+         BoxLayout moviePanelHeaderL = new BoxLayout(moviePanelHeader,BoxLayout.X_AXIS);
+         moviePanelHeader.setLayout(moviePanelHeaderL);
+ //        moviePanel.add(moviePanelHeader,BorderLayout.NORTH);
+             JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+             labelPanel.setAlignmentX(LEFT_ALIGNMENT);//align not working
+             moviePanelHeader.add(labelPanel);
+                 JLabel label = new JLabel(headerLabel);
+                 labelPanel.add(label);
+
+         return moviePanelHeader;    
+     }
+    
     //======================================INFO FOR THE MOVIES======================================
     public JFrame info(){
         info = new JFrame();
@@ -708,7 +750,7 @@ public class View extends JFrame {
                     movieDetails.setLayout(movieGrid);
 //                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
                     center2.add(movieDetails);
-                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getAllMovies()[0][5]+".jpg"));
+                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getInfoMovie()[0][5]+".jpg"));
                         movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
                         JLabel itt = new JLabel(movieImage);
                         movieDetails.add(itt);
@@ -716,13 +758,13 @@ public class View extends JFrame {
                         detailsMovie.setLayout(new BoxLayout(detailsMovie, BoxLayout.Y_AXIS));
                         detailsMovie.setBorder(new EmptyBorder(20,20,20,20));
                         movieDetails.add(detailsMovie);
-                            JLabel movieTitle = new JLabel(viewController.getAllMovies()[0][0]);
+                            JLabel movieTitle = new JLabel(viewController.getInfoMovie()[0][0]);
                             detailsMovie.add(movieTitle);
-                            JLabel movieDate = new JLabel(viewController.getAllMovies()[0][2]);
+                            JLabel movieDate = new JLabel(viewController.getInfoMovie()[0][2]);
                             detailsMovie.add(movieDate);
-                            JLabel movieGenre = new JLabel(viewController.getAllMovies()[0][1]);
+                            JLabel movieGenre = new JLabel(viewController.getInfoMovie()[0][1]);
                             detailsMovie.add(movieGenre);
-                            JLabel movieSynopses = new JLabel(viewController.getAllMovies()[0][1]);
+                            JLabel movieSynopses = new JLabel("Synopsis: \n"+viewController.getInfoMovie()[0][6]);
                             detailsMovie.add(movieSynopses);
                         
                         
@@ -791,6 +833,20 @@ public class View extends JFrame {
     public JFrame getInfo() {
         return info;
     }
+
+    public int getCountResult() {
+        return countResult;
+    }
+
+    public String[] getMovieID() {
+        return movieID;
+    }
+
+    public String getPanelActive() {
+        return panelActive;
+    }
+
+    
 
     
     

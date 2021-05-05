@@ -507,6 +507,65 @@ public class Model {
         return searchMovieResult;
     }
     
+    
+    //=================================TEST====================================================
+    public String[][] infoMovies(int movieCode) 
+    {
+//        int allMoviesCount = countResult;
+        String[][] allMovieResult = new String[1][7];
+
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String searchQuery = "Select * from movie_list where movie_code = "+movieCode;
+            
+
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(searchQuery);
+            int row = 0;
+            
+            while (rs.next()) {                     
+                
+                allMovieResult[0][0] = rs.getString("movie_title");
+                allMovieResult[0][1] = rs.getString("movie_genre");
+                allMovieResult[0][2] = rs.getString("release_year");
+                allMovieResult[0][3] = rs.getString("num_avail");
+                allMovieResult[0][4] = rs.getString("num_rented");
+                allMovieResult[0][5] = rs.getString("movie_code");
+                allMovieResult[0][6] = rs.getString("movie_info");
+                row++;
+                
+            }
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return allMovieResult;
+    }
+    
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
