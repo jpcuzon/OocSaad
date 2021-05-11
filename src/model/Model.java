@@ -325,8 +325,8 @@ public class Model {
             
             Statement stmt = conn.createStatement();
             
-            //takes the name and locaion information
-            String[][] cateList = new String[allMoviesCount][6];
+//            //takes the name and locaion information
+//            String[][] cateList = new String[allMoviesCount][7];
 
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
@@ -334,18 +334,18 @@ public class Model {
             int num_avail;
             while (rs.next()) {                     
                 
-                cateList[row][0] = rs.getString("movie_title");
-                cateList[row][1] = rs.getString("movie_genre");
-                cateList[row][2] = rs.getString("release_year");
-                cateList[row][3] = rs.getString("num_avail");
-                cateList[row][4] = rs.getString("num_rented");
-                cateList[row][5] = rs.getString("movie_code");
+                cateResult[row][0] = rs.getString("movie_title");
+                cateResult[row][1] = rs.getString("movie_genre");
+                cateResult[row][2] = rs.getString("release_year");
+                cateResult[row][3] = rs.getString("num_avail");
+                cateResult[row][4] = rs.getString("num_rented");
+                cateResult[row][5] = rs.getString("movie_code");
                 
                 row++;
                 
             }
-            
-            cateResult = cateList;
+//            
+//            cateResult = cateList;
 
             // Close the result set, statement and the connection
             rs.close();
@@ -507,8 +507,7 @@ public class Model {
         return searchMovieResult;
     }
     
-    
-    //=================================TEST====================================================
+    //Model for the info panel ===================== change description later
     public String[][] infoMovies(int movieCode) 
     {
 //        int allMoviesCount = countResult;
@@ -565,12 +564,56 @@ public class Model {
         return allMovieResult;
     }
     
+    public int movieID(int movieCode) //getting the movie ID
+    {
+        int movieID=0;
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select * from movie_list where movie_code = "+movieCode;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Loop through the result set
+            rs.next();
+            movieID = rs.getInt("id_movie");
+            
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return movieID;
+        
+    }
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    //assigns a card number to a customer
-    public boolean UserCard(Card cardDetails)
+    //test for date
+    public boolean setRent(Rent rent)
     {
         boolean result = false;
         
@@ -579,8 +622,8 @@ public class Model {
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
-            String update = "INSERT INTO movie_customers (card_num,card_pin)" +
-                    "VALUES ('"+cardDetails.getCardDetails()[0]+"','"+cardDetails.getCardDetails()[1]+"');";
+            String update = "INSERT INTO rent (id_customer,id_movie,date_rent)" +
+                    "VALUES ("+rent.getCustomerID()+","+rent.getMovieID()+",'"+rent.getRentDate()+"');";
 
             //Get a connection to the database
             Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
@@ -615,91 +658,38 @@ public class Model {
         
         return result;
     }
+    //=================================TEST====================================================
     
-    //check if there's a much of the pin
-    public int countPin(Card pin){
-        
-        int countResult = 0;
-        
-        try
-        {
-            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
-            String dbUser = "Jon_2019395";
-            String dbPassword = "2019395";
-//            String countQuery = "select count(*) from barbers where full_name like '%" + search.getSearchBarber() + "%';"; 
-            String countQuery = "Select count(*) from movie_customers where card_pin like '" + pin.getCardDetails()[1] + "'";
-            
-            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
-            
-            Statement stmt = conn.createStatement();
-            
-            ResultSet rs = stmt.executeQuery(countQuery);
-            rs.next();
-            countResult = rs.getInt(1);
-            
-            // Close the result set, statement and the connection
-            rs.close();
-            stmt.close();
-            conn.close();
-   
-        } catch (SQLException se) {
-            System.out.println("SQL Exception:");
-
-            // Loop through the SQL Exceptions
-            while (se != null) {
-                System.out.println("State  : " + se.getSQLState());
-                System.out.println("Message: " + se.getMessage());
-                System.out.println("Error  : " + se.getErrorCode());
-
-                se = se.getNextException();
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        
-        return countResult;
-    }
-    
-    
-    
-    //checks for a match of pin
-    public String[] checkPin(Card pin)
+    public boolean userCardInput(User user)
     {
         
-//        int countMovie = countSearchTitle(search);
-        String checkPin[] = new String[2];
+        boolean result = false;
+        
+        try {
 
-        try
-        {
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
-            String searchQuery = "Select * from movie_customers where card_pin like '%" + pin.getCardDetails()[1] + "%'";
-            
+            String query = "select * from movie_customers where card_num like '%"+user.getCardNumber()+"' and card_pin like '"+user.getPin()+"'";
 
-            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
-            
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
             Statement stmt = conn.createStatement();
-            
-            //takes the name and locaion information
-            String[] pinTemp = new String[2];
 
-            ResultSet rs = stmt.executeQuery(searchQuery);
-            int row = 0;
-            
-            while (rs.next()) {                     
-                
-                pinTemp[0] = rs.getString("card_num");
-                pinTemp[1] = rs.getString("card_pin");                
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Loop through the result set
+            if (rs.next()) {
+                result = true;
             }
-            
-            checkPin = pinTemp;
 
             // Close the result set, statement and the connection
             rs.close();
             stmt.close();
             conn.close();
-            
         } catch (SQLException se) {
             System.out.println("SQL Exception:");
 
@@ -715,7 +705,194 @@ public class Model {
             System.out.println(e);
         }
         
-        return checkPin;
+        return result;
+        
+    }
+    
+    public int[] userID(User user)
+    {
+        int[] userNumber= new int[2]; //stores the userNumber in index 0 and the balance on index 1
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select * from movie_customers where card_num like '%"+user.getCardNumber()+"' and card_pin like '"+user.getPin()+"'";
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Loop through the result set
+            rs.next();
+            userNumber[0] = rs.getInt("id_customer");
+            userNumber[1] = rs.getInt("balance");
+            
+            
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return userNumber;
+        
+    }
+    
+    public void updateNumAvailRent(int movieID) //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    {
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Update movie_list "
+                    + "Set num_avail = num_avail-1, num_rented = num_rented + 1 "
+                    + "where id_movie = "+movieID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
+
+            // Loop through the result set
+            
+            // Close the statement and the connection
+            
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (num Avail):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+    
+    public void deductBalance(int customerID) //charges the customer 2.99 euros for their rent and add 1 to the "times_used" column (the number of times they rented)
+    {
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Update movie_customers "
+                    + "Set balance = balance - 2.99, times_used = times_used + 1 "
+                    + "where id_customer = "+customerID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
+
+            // Loop through the result set
+            
+            // Close the statement and the connection
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception(deduct)");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+    
+        //assigns a card number to a customer
+    public boolean newCard(Card cardDetails)
+    {
+        boolean result = false;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String update = "INSERT INTO movie_customers (card_num,card_pin, balance,times_used)" +
+                    "VALUES ('"+cardDetails.getCardNumber()+"','"+cardDetails.getPin()+"','"+cardDetails.getBalance()+"',0);";
+
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            stmt.executeUpdate(update);
+            
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: ");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return result;
     }
     
     

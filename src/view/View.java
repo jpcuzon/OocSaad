@@ -18,12 +18,14 @@ import java.awt.ScrollPane;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -196,7 +198,7 @@ public class View extends JFrame {
                     movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
                     movieTile.add(movieDetails);
                         ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getAllMovies()[i][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+                        movieImage.setImage(movieImage.getImage().getScaledInstance(250, 375, java.awt.Image.SCALE_SMOOTH));
                         JLabel itt = new JLabel(movieImage);
                         movieDetails.add(itt);
                         JLabel movieTitle = new JLabel(viewController.getAllMovies()[i][0]);
@@ -208,7 +210,7 @@ public class View extends JFrame {
                         movieID[i] = viewController.getAllMovies()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rent"+movieID[i]);
+                        rentB.setActionCommand("info"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -260,7 +262,7 @@ public class View extends JFrame {
                     movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
                     movieTile.add(movieDetails);
                         ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getSearchMovieResult()[i][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+                        movieImage.setImage(movieImage.getImage().getScaledInstance(250, 375, java.awt.Image.SCALE_SMOOTH));
                         JLabel itt = new JLabel(movieImage);
                         movieDetails.add(itt);
                         JLabel movieTitle = new JLabel(viewController.getSearchMovieResult()[i][0]);
@@ -272,7 +274,7 @@ public class View extends JFrame {
                         movieID[i] = viewController.getSearchMovieResult()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rent"+movieID[i]);
+                        rentB.setActionCommand("info"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -329,7 +331,7 @@ public class View extends JFrame {
                     movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
                     movieTile.add(movieDetails);
                         ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getMoviesActive()[i][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+                        movieImage.setImage(movieImage.getImage().getScaledInstance(250, 375, java.awt.Image.SCALE_SMOOTH));
                         JLabel itt = new JLabel(movieImage);
                         movieDetails.add(itt);
                         JLabel movieTitle = new JLabel(viewController.getMoviesActive()[i][0]);
@@ -341,7 +343,7 @@ public class View extends JFrame {
                         movieID[i] = viewController.getMoviesActive()[i][5];
                         JButton rentB = new JButton("Info");
                         rentB.addActionListener(viewController);
-                        rentB.setActionCommand("rent"+movieID[i]);
+                        rentB.setActionCommand("info"+movieID[i]);
                         movieDetails.add(rentB);
                 
                 
@@ -466,7 +468,7 @@ public class View extends JFrame {
                     movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
                     movieTile.add(movieDetails);
                         ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getCategoriesResult()[i][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+                        movieImage.setImage(movieImage.getImage().getScaledInstance(250, 375, java.awt.Image.SCALE_SMOOTH));
                         JLabel itt = new JLabel(movieImage);
                         movieDetails.add(itt);
                         JLabel movieTitle = new JLabel(viewController.getCategoriesResult()[i][0]);
@@ -716,7 +718,10 @@ public class View extends JFrame {
          return moviePanelHeader;    
      }
     
-    //======================================INFO FOR THE MOVIES======================================
+    //======================================INFO PAGE FOR THE MOVIES======================================
+    
+    CardLayout infoCardL;
+    JPanel infoMainCard;
     public JFrame info(){
         info = new JFrame();
         info.setVisible(true);
@@ -732,9 +737,95 @@ public class View extends JFrame {
         
 //        JLabel test = new JLabel("MOVIE BANNER");
 //            info.add(test, BorderLayout.LINE_START);
-        //centre panel              
+        //centre panel          
+        
+        infoCardL = new CardLayout();
+        infoMainCard = new JPanel();
+        infoMainCard.setLayout(infoCardL);
+        info.add(infoMainCard, BorderLayout.CENTER);
+        
+        infoMainCard.add(infoPanel(), "info");
+        
+//        JPanel rentCenter = new JPanel();
+//        info.add(rentCenter, BorderLayout.CENTER);
+//        BorderLayout borderPanel = new BorderLayout();
+//        rentCenter.setLayout(borderPanel);
+////        JLabel test1 = new JLabel("SYNOPSIS");
+////            rentCenter.add(test1, BorderLayout.PAGE_START);
+//            
+//        JPanel center2 = new JPanel();
+//        rentCenter.add(center2, BorderLayout.CENTER);
+////        GridLayout centerGrid = new GridLayout(4,2);
+////        center2.setLayout(centerGrid);
+//        
+//            JPanel movieDetails = new JPanel();
+//            GridLayout movieGrid = new GridLayout(1,2);
+//            movieDetails.setLayout(movieGrid);
+////                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
+//            center2.add(movieDetails);
+//                ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getInfoMovie()[0][5]+".jpg"));
+//                movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
+//                JLabel itt = new JLabel(movieImage);
+//                movieDetails.add(itt);
+//                
+//                JPanel detailsMovie = new JPanel();
+//                detailsMovie.setLayout(new BoxLayout(detailsMovie, BoxLayout.Y_AXIS));
+//                detailsMovie.setBorder(new EmptyBorder(20,20,20,20));
+//                movieDetails.add(detailsMovie);
+//                    JLabel movieTitle = new JLabel(viewController.getInfoMovie()[0][0]);
+//                    detailsMovie.add(movieTitle);
+//                    JLabel movieDate = new JLabel(viewController.getInfoMovie()[0][2]);
+//                    detailsMovie.add(movieDate);
+//                    JLabel movieGenre = new JLabel(viewController.getInfoMovie()[0][1]);
+//                    detailsMovie.add(movieGenre);
+////                            JLabel movieSynopses = new JLabel("Synopsis: \n"+viewController.getInfoMovie()[0][6]);
+////                            detailsMovie.add(movieSynopses);
+//                    JTextArea movieSynopsis = new JTextArea("Synopsis: \n"+viewController.getInfoMovie()[0][6]);
+//                    movieSynopsis.setWrapStyleWord(true);
+//                    movieSynopsis.setLineWrap(true);
+//                    movieSynopsis.setEditable(false);
+//                    detailsMovie.add(movieSynopsis);
+//
+//        JPanel footer = new JPanel();
+//        GridLayout footerGrid = new GridLayout(2,1);
+//        footer.setLayout(footerGrid);
+//            JButton rent = new JButton("Rent");
+//                rent.addActionListener(viewController);
+//                rent.setActionCommand("rent");
+//            JButton back = new JButton("Back");
+//                back.addActionListener(viewController);
+//                back.setActionCommand("back1");
+//
+//                footer.add(rent);
+//                footer.add(back);
+//            rentCenter.add(footer, BorderLayout.PAGE_END);
+//                        
+        
+            
+//        JPanel footer = new JPanel();
+//        GridLayout footerGrid = new GridLayout(2,1);
+//        footer.setLayout(footerGrid);
+//        JButton rent = new JButton("Rent");
+//            rent.addActionListener(viewController);
+//            rent.setActionCommand("rent");
+//        JButton back = new JButton("Back");
+//            back.addActionListener(viewController);
+//            back.setActionCommand("back1");
+//            
+//            footer.add(rent);
+//            footer.add(back);
+//        info.add(footer, BorderLayout.PAGE_END);
+                    
+        info.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        info.validate();
+        info.repaint();
+        
+        return info;
+    }
+
+    public JPanel infoPanel(){
+        
         JPanel rentCenter = new JPanel();
-        info.add(rentCenter, BorderLayout.CENTER);
         BorderLayout borderPanel = new BorderLayout();
         rentCenter.setLayout(borderPanel);
 //        JLabel test1 = new JLabel("SYNOPSIS");
@@ -745,51 +836,155 @@ public class View extends JFrame {
 //        GridLayout centerGrid = new GridLayout(4,2);
 //        center2.setLayout(centerGrid);
         
-       JPanel movieDetails = new JPanel();
-                    GridLayout movieGrid = new GridLayout(1,2);
-                    movieDetails.setLayout(movieGrid);
+            JPanel movieDetails = new JPanel();
+            GridLayout movieGrid = new GridLayout(1,2);
+            movieDetails.setLayout(movieGrid);
 //                    movieDetails.setLayout(new BoxLayout(movieDetails, BoxLayout.Y_AXIS));
-                    center2.add(movieDetails);
-                        ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getInfoMovie()[0][5]+".jpg"));
-                        movieImage.setImage(movieImage.getImage().getScaledInstance(110, 200, 100));
-                        JLabel itt = new JLabel(movieImage);
-                        movieDetails.add(itt);
-                        JPanel detailsMovie = new JPanel();
-                        detailsMovie.setLayout(new BoxLayout(detailsMovie, BoxLayout.Y_AXIS));
-                        detailsMovie.setBorder(new EmptyBorder(20,20,20,20));
-                        movieDetails.add(detailsMovie);
-                            JLabel movieTitle = new JLabel(viewController.getInfoMovie()[0][0]);
-                            detailsMovie.add(movieTitle);
-                            JLabel movieDate = new JLabel(viewController.getInfoMovie()[0][2]);
-                            detailsMovie.add(movieDate);
-                            JLabel movieGenre = new JLabel(viewController.getInfoMovie()[0][1]);
-                            detailsMovie.add(movieGenre);
-                            JLabel movieSynopses = new JLabel("Synopsis: \n"+viewController.getInfoMovie()[0][6]);
-                            detailsMovie.add(movieSynopses);
-                        
-                        
-        
-            
+            center2.add(movieDetails);
+                ImageIcon movieImage = new ImageIcon(getClass().getResource("images/"+viewController.getInfoMovie()[0][5]+".jpg"));
+                movieImage.setImage(movieImage.getImage().getScaledInstance(300, 450, java.awt.Image.SCALE_SMOOTH));
+                JLabel itt = new JLabel(movieImage);
+                movieDetails.add(itt);
+                
+                JPanel detailsMovie = new JPanel();
+                detailsMovie.setLayout(new BoxLayout(detailsMovie, BoxLayout.Y_AXIS));
+                detailsMovie.setBorder(new EmptyBorder(20,20,20,20));
+                movieDetails.add(detailsMovie);
+                    JLabel movieTitle = new JLabel(viewController.getInfoMovie()[0][0]);
+                    detailsMovie.add(movieTitle);
+                    JLabel movieDate = new JLabel(viewController.getInfoMovie()[0][2]);
+                    detailsMovie.add(movieDate);
+                    JLabel movieGenre = new JLabel(viewController.getInfoMovie()[0][1]);
+                    detailsMovie.add(movieGenre);
+                    JTextArea movieSynopsis = new JTextArea("Synopsis: \n"+viewController.getInfoMovie()[0][6]);
+                    movieSynopsis.setWrapStyleWord(true);
+                    movieSynopsis.setLineWrap(true);
+                    movieSynopsis.setEditable(false);
+                    detailsMovie.add(movieSynopsis);
+
         JPanel footer = new JPanel();
         GridLayout footerGrid = new GridLayout(2,1);
         footer.setLayout(footerGrid);
-        JButton rent = new JButton("Rent");
-        JButton back = new JButton("Back");
-            back.addActionListener(viewController);
-            back.setActionCommand("back1");
+            if(Integer.parseInt(viewController.getInfoMovie()[0][3])>0){ // checks if the machine still has stock for the selected movie, changes the "rent" button to "not available" if there's no stock left
+                JButton rent = new JButton("Rent");
+                rent.addActionListener(viewController);
+                rent.setActionCommand("rent");
+                footer.add(rent);
+            }else{
+                JButton notAvailable = new JButton("Not Available");
+                notAvailable.setForeground(Color.GRAY);
+                footer.add(notAvailable);
+            }
             
-            footer.add(rent);
-            footer.add(back);
-        info.add(footer, BorderLayout.PAGE_END);
-                    
-        info.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        info.validate();
-        info.repaint();
+            JButton exit = new JButton("Exit");
+                exit.addActionListener(viewController);
+                exit.setActionCommand("exit");
+
+                footer.add(exit);
+            rentCenter.add(footer, BorderLayout.PAGE_END);
         
-        return info;
+        return rentCenter;
+        
     }
+    
+    JCheckBox emailButton;
+    JLabel emailLabel;
+    JTextField emailInput;
+    public JPanel payPanel(){
+        
+        JPanel payCenter = new JPanel();
+        BorderLayout borderPanel = new BorderLayout();
+        payCenter.setLayout(borderPanel);
+            
+        JPanel paymentDetails = new JPanel();
+        paymentDetails.setLayout(new BorderLayout());
+        payCenter.add(paymentDetails);
+            JPanel titlePanel = new JPanel(new GridLayout(2,1));
+            titlePanel.setBorder(new EmptyBorder(20,20,60,20));//test
+            paymentDetails.add(titlePanel, BorderLayout.PAGE_START);
+                JLabel movieTitle = new JLabel("Movie: "+viewController.getInfoMovie()[0][0]);
+                JLabel priceLabel = new JLabel("Price: €2.99");
+                titlePanel.add(movieTitle);
+                titlePanel.add(priceLabel);
 
+                JPanel cardDetails = new JPanel(new GridLayout(1,2));
+                cardDetails.setBorder(new EmptyBorder(0,20,0,20));
+                paymentDetails.add(cardDetails, BorderLayout.CENTER);
+                    JButton insertCard = new JButton("Insert Card");
+                    insertCard.addActionListener(viewController);
+                    insertCard.setActionCommand("insertCard");
+                    cardDetails.add(insertCard);
+                    JButton createCard = new JButton("Generate Card");
+                    createCard.addActionListener(viewController);
+                    createCard.setActionCommand("createCard");
+                    cardDetails.add(createCard);
+                   
+            JPanel emailPanel = new JPanel();
+            paymentDetails.add(emailPanel, BorderLayout.PAGE_END);
+                
+                JPanel emailButtonP = new JPanel(new GridLayout(3,1,2,2));
+                emailPanel.add(emailButtonP);
+                    emailButton = new JCheckBox("Get a receipt through email");
+                    emailButton.setSelected(false);
+                    emailButton.addActionListener(viewController);
+                    emailButton.setActionCommand("show/hide");
+                    emailButtonP.add(emailButton);
+               
+                    emailLabel = new JLabel("Enter your email:");
+                    emailLabel.setVisible(false);
+                    emailButtonP.add(emailLabel);
+                    emailInput = new JTextField();
+                    emailInput.setVisible(false);
+                    emailButtonP.add(emailInput);
+                                 
+                
 
+        JPanel footer = new JPanel();
+        footer.setBorder(new EmptyBorder(50,20,0,20));
+        GridLayout footerGrid = new GridLayout(3,1);
+        footer.setLayout(footerGrid);
+            JButton rent = new JButton("Confirm");
+                rent.addActionListener(viewController);
+                rent.setActionCommand("confirm");
+            JButton back = new JButton("Back");
+                back.addActionListener(viewController);
+                back.setActionCommand("infoBack");
+            JButton cancel = new JButton("Cancel");
+                cancel.addActionListener(viewController);
+                cancel.setActionCommand("exit");
+
+                footer.add(rent);
+                footer.add(back);
+                footer.add(cancel);
+            payCenter.add(footer, BorderLayout.PAGE_END);
+        
+        return payCenter;
+        
+    }
+    
+    
+    //Panels for the JOptionPane
+    JTextField lastDigits;
+    JTextField cardPin;
+            
+    public JPanel inputCardDetails(){
+        
+        JPanel inputCardDetails = new JPanel(new GridLayout(4,1,5,5));
+            JLabel cardNumLabel = new JLabel("Please enter the last 4 digits of your card");
+            lastDigits = new JTextField(4);
+            JLabel cardPinLabel = new JLabel("Please enter your pin");
+            cardPin = new JTextField(4);
+            inputCardDetails.add(cardNumLabel);
+            inputCardDetails.add(lastDigits);
+            inputCardDetails.add(cardPinLabel);
+            inputCardDetails.add(cardPin);
+        
+        
+        
+        return inputCardDetails;
+        
+        
+    }
 
     //----------------------------------------------------getters and setters----------------------------------------------------\\
     //I think we need getters if we call attributes from one package to another so we don't have to
@@ -844,6 +1039,35 @@ public class View extends JFrame {
 
     public String getPanelActive() {
         return panelActive;
+    }
+
+    public CardLayout getInfoCardL() {
+        return infoCardL;
+    }
+
+    public JPanel getInfoMainCard() {
+        return infoMainCard;
+    }
+
+    public JTextField getLastDigits() {
+        return lastDigits;
+    }
+
+    public JTextField getCardPin() {
+        return cardPin;
+    }
+
+    public JLabel getEmailLabel() {
+        return emailLabel;
+    }
+
+    
+    public JTextField getEmailInput() {
+        return emailInput;
+    }
+    
+    public JCheckBox getEmailButton() {
+        return emailButton;
     }
 
     

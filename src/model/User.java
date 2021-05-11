@@ -9,17 +9,19 @@ package model;
  *
  * @author jonpaulcarlo
  */
-public class User {
+public class User extends Card{
     
     private String email;
+//    private String cardNumber;
+//    private String pin;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public User(){
+        
     }
     
+    public User(String cardNumber, String pin) {
+        setCardNumber(cardNumber);
+        setPin(pin);
+    }
     
 }

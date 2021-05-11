@@ -8,8 +8,14 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
 import model.Model;
 import model.Movies;
+import model.Rent;
+import model.User;
 import view.View;
 
 /**
@@ -19,6 +25,7 @@ import view.View;
 public class ViewController implements ActionListener {
     View view;
     Model model;
+    Movies[] moviesAll,moviesSearch;
     
     private int allMovieCount = 0;
     int countSearch; //counts the search result
@@ -28,7 +35,13 @@ public class ViewController implements ActionListener {
     String[][] moviesActive; // for sorting
     String [][] categoriesResult;
     String search;
-    String active;
+    String active; //for sorting
+    String cardLast = null; //for the last 4 digit of the card
+    String pin = null; //for the pin input
+    int movieCode = 0;
+    int customerID; //will serve as a foreign key for the rent
+    int movieID; //will serve as a foreign key for the rent
+    int customerBalance; //customer's balance on their card
     
     String[][] infoMovie;
 
@@ -447,28 +460,30 @@ public class ViewController implements ActionListener {
         
         //===========================TEST RENT=============================
         int countResult = view.getCountResult();
+        
         for(int i=0;i<countResult;i++){
             
-            if(e.getActionCommand().equals("rent"+view.getMovieID()[i])){
+            if(e.getActionCommand().equals("info"+view.getMovieID()[i])){
                 
                 if(view.getPanelActive().equalsIgnoreCase("movieAll")){
                     
-                    int movieCode = Integer.parseInt(allMovies[i][5]);
+                    movieCode = Integer.parseInt(allMovies[i][5]);
+                    System.out.println("code: " + movieCode);
                     infoMovie = model.infoMovies(movieCode);
                     
                 }else if(view.getPanelActive().equalsIgnoreCase("movieSearch")){
                     
-                    int movieCode = Integer.parseInt(searchMovieResult[i][5]);
+                    movieCode = Integer.parseInt(searchMovieResult[i][5]);
                     infoMovie = model.infoMovies(movieCode);
                     
                 }else if(view.getPanelActive().equalsIgnoreCase("movieSort")){
                     
-                    int movieCode = Integer.parseInt(moviesActive[i][5]);
+                    movieCode = Integer.parseInt(moviesActive[i][5]);
                     infoMovie = model.infoMovies(movieCode);
                     
                 }else if(view.getPanelActive().equalsIgnoreCase("movieCategory")){
                     
-                    int movieCode = Integer.parseInt(categoriesResult[i][5]);
+                    movieCode = Integer.parseInt(categoriesResult[i][5]);
                     infoMovie = model.infoMovies(movieCode);
                     
                 }
@@ -477,13 +492,178 @@ public class ViewController implements ActionListener {
                 
             view.info();
             
+            
+            
             }
             
         }
-        if(e.getActionCommand().equals("back1")){
+        
+        //add this=================================================================================================
+        
+        if(e.getActionCommand().equals("rent")){
+            
+            cardLast = null; //re-initialize the card details, simulating the removal of card if the user rented a movie before deciding to rent another one
+            pin = null;
+            
+            view.getInfoMainCard().add(view.payPanel(),"payment");
+            view.getInfoCardL().show(view.getInfoMainCard(), "payment");
+            
+        }
+        
+        if(e.getActionCommand().equals("exit")){
             view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
         }
+        
+        if(e.getActionCommand().equals("infoBack")){
+            view.getInfoMainCard().add(view.infoPanel(),"info");
+            view.getInfoCardL().show(view.getInfoMainCard(), "info");
+            
+        }
     
+        if(e.getActionCommand().equals("insertCard")){
+            
+            boolean loop = true;
+            
+            while(loop == true){
+                
+                
+                loop = false;
+                int insertCard = JOptionPane.showConfirmDialog(view.getInfoMainCard(), view.inputCardDetails(), "Please enter your details:", JOptionPane.OK_CANCEL_OPTION);
+                cardLast = view.getLastDigits().getText();
+                pin = view.getCardPin().getText();
+
+
+                if(insertCard==0){
+
+                    if(!cardLast.matches("[a-zA-Z]*")&&(cardLast.length()==4)){
+
+                        if(!pin.matches("[a-zA-Z]*")&&(pin.length()==3)){
+
+                            System.out.println("1 "+cardLast + " " + pin);
+                        }else{showMessageDialog(view.getInfoMainCard(), "Please enter a valid pin! (Must be 3 numbers and doesn't contain any letter)", "Error!", 0); loop = true;}
+
+                    }else{showMessageDialog(view.getInfoMainCard(), "Please enter a valid 4 digit number! (Must be 4 numbers that matches the last 4 digits of your card and doesn't contain any letter)", "Error!", 0); loop = true;}
+
+
+                }
+
+                System.out.println(insertCard+" "+movieCode);
+
+                }
+            
+            User user = new User(cardLast, pin);
+            boolean checkCard = model.userCardInput(user);
+            
+            
+            if(checkCard){
+                
+                customerID = model.userID(user)[0];
+                customerBalance = model.userID(user)[1]; //fetches the card balance
+                movieID = model.movieID(movieCode); 
+                System.out.println("Success! 2 "+cardLast + " " + pin);
+                
+            }else{
+                
+                showMessageDialog(view.getInfoMainCard(), "Wrong Card Details!", "Error!", 0);
+                cardLast = pin = null;
+            }
+            
+        }
+        
+        
+        
+        if(e.getActionCommand().equals("confirm")){
+            
+            if(!(cardLast==null) || !(pin==null)){ //checks if the user entered a vaild card first
+                
+                    if(customerBalance>2.99){  //checks if the customer has enough balance first and shows an error message if they don't
+                        
+                        Rent rent = new Rent(movieID, customerID);
+                    
+                        //Date setter==============================================================
+                        Date date = new Date();
+                        String dateFormat = "yyyy-MM-dd";
+                        SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+                        String sqlConvert = dateFormatter.format(date);
+
+                        rent.setRentDate(sqlConvert);
+                        System.out.println(sqlConvert);
+                        System.out.println(rent.getRentDate());
+
+                        //========================================================================
+
+                        model.setRent(rent);
+                        model.updateNumAvailRent(movieID);
+                        model.deductBalance(customerID); //deducts 2.99 euros on the user balance
+
+                        System.out.println("Success! 3 "+cardLast + " " + pin + " "+ movieCode + " UserID "+customerID + " movieID "+ movieID);  
+                        JOptionPane.showMessageDialog(view.getInfoMainCard(), "Please don't forget to take the movie disc and your card!", "Transaction Complete!", 1);
+                        view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+                        
+                        cardLast = null; //re-initializes or 'removes' the card
+                        pin = null; 
+                        
+                        
+                    
+                    }else{
+                        
+                        showMessageDialog(view.getInfoMainCard(), "Insufficient Balance!", "Error!", 0);
+                        cardLast = null; //re-initializes or 'removes' the card
+                        pin = null; 
+                        
+                    }
+                
+            }else{showMessageDialog(view.getInfoMainCard(), "Please enter your payment details first!", "Error!", 0);}
+
+//            if(view.getEmailButton().isSelected()){
+//                System.out.println(view.getEmailInput().getText());
+//            }else{System.out.println("No email");}
+//            
+            
+        }
+        
+        
+        if(e.getActionCommand().equals("createCard")){
+            
+            User user = new User();
+            user.generateCard();
+            String genCardNumber = user.getCardNumber();
+            String genPin = user.getPin();
+            int genBalance = user.getBalance();
+            
+            System.out.println(genCardNumber + " " + genPin +" "+ genBalance);
+            
+            JOptionPane.showMessageDialog(view.getInfoMainCard(), "Insert the card now with these credentials:\n"
+                    + "\nCard Number: "+genCardNumber+"\nCard Pin: "+ genPin + "\nRemaining Balance: "+genBalance
+                    +"\n\nPlease remember your card details!\n"
+                            + "(*Note: You only need the last 4 digits of your card to insert it.)", "Card Created!", 1);
+            model.newCard(user);
+            
+        }
+        
+        if(e.getActionCommand().equals("show/hide")){
+            
+            if(view.getEmailButton().isSelected()){
+                
+                view.getEmailLabel().setVisible(true);
+                view.getEmailInput().setVisible(true);
+                
+            }else{
+                
+                view.getEmailLabel().setVisible(false);
+                view.getEmailInput().setVisible(false);
+                
+            }
+            
+            System.out.println(view.getEmailButton().isSelected());
+        }
+        
+        
+        
+        
+        
+        
+        
     }
     
     
@@ -525,6 +705,14 @@ public class ViewController implements ActionListener {
 
     public String[][] getInfoMovie() {
         return infoMovie;
+    }
+
+    public Movies[] getMoviesAll() {
+        return moviesAll;
+    }
+
+    public Movies[] getMoviesSearch() {
+        return moviesSearch;
     }
 
     public String getActive() {
