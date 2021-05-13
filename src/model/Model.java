@@ -11,15 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author jonpaulcarlo
- */
+
+
 public class Model {
     
-    int countResult;
+    private int countResult;
     
-    //----------------------------------------------------------All Movies----------------------------------------------------------\\
+    //================================================================All Movies================================================================\\
     //counts all the movies on the database
     public int allMoviesCount(){
         
@@ -120,7 +118,7 @@ public class Model {
         return allMovieResult;
     }
     
-    //----------------------------------------------------------Search----------------------------------------------------------\\
+    //================================================================Search================================================================\\
     //counts the search through name results
     public int countSearchTitle(String search){
         
@@ -189,7 +187,6 @@ public class Model {
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
             
-            int num_avail;
             while (rs.next()) {                     
                 
                 searchMovie[row][0] = rs.getString("movie_title");
@@ -198,12 +195,7 @@ public class Model {
                 searchMovie[row][3] = rs.getString("num_avail");
                 searchMovie[row][4] = rs.getString("num_rented");
                 searchMovie[row][5] = rs.getString("movie_code");
-//                num_avail = rs.getInt("num_avail");
-//                if(num_avail>0){
-//                    
-//                    searchMovie[row][6] = rs.getString("num_avail");
-//                    
-//                }else{System.out.println("Not Avaialble");}
+                
                 row++;
                 
             }
@@ -233,7 +225,7 @@ public class Model {
         return searchMovieResult;
     }
     
-    //----------------------------------------------------------Categories----------------------------------------------------------\\
+    //================================================================Categories================================================================\\
     //cout the results for the categories function first
     public int categoriesMoviesCount(String categories) 
     {
@@ -324,14 +316,10 @@ public class Model {
             Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
             
             Statement stmt = conn.createStatement();
-            
-//            //takes the name and locaion information
-//            String[][] cateList = new String[allMoviesCount][7];
 
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
             
-            int num_avail;
             while (rs.next()) {                     
                 
                 cateResult[row][0] = rs.getString("movie_title");
@@ -344,9 +332,7 @@ public class Model {
                 row++;
                 
             }
-//            
-//            cateResult = cateList;
-
+            
             // Close the result set, statement and the connection
             rs.close();
             stmt.close();
@@ -370,7 +356,7 @@ public class Model {
         return cateResult;
     }
     
-    //----------------------------------------------------------Sort----------------------------------------------------------\\
+    //================================================================Sort================================================================\\
     //Sorts all the movies to the selected order
     public String[][] allMoviesSort(String sort) 
     {
@@ -398,7 +384,6 @@ public class Model {
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
             
-            int num_avail;
             while (rs.next()) {                     
                 
                 sortMoviesResult[row][0] = rs.getString("movie_title");
@@ -460,12 +445,9 @@ public class Model {
             
             Statement stmt = conn.createStatement();
             
-            //takes the name and locaion information
-            
             ResultSet rs = stmt.executeQuery(searchQuery);
             int row = 0;
             
-            int num_avail;
             while (rs.next()) {                     
                 
                 searchMovieResult[row][0] = rs.getString("movie_title");
@@ -474,12 +456,7 @@ public class Model {
                 searchMovieResult[row][3] = rs.getString("num_avail");
                 searchMovieResult[row][4] = rs.getString("num_rented");
                 searchMovieResult[row][5] = rs.getString("movie_code");
-//                num_avail = rs.getInt("num_avail");
-//                if(num_avail>0){
-//                    
-//                    searchMovie[row][6] = rs.getString("num_avail");
-//                    
-//                }else{System.out.println("Not Avaialble");}
+                
                 row++;
                 
             }
@@ -507,10 +484,11 @@ public class Model {
         return searchMovieResult;
     }
     
-    //Model for the info panel ===================== change description later
+    //================================================================Renting================================================================\\
+    //Model for the info pane
     public String[][] infoMovies(int movieCode) 
     {
-//        int allMoviesCount = countResult;
+        
         String[][] allMovieResult = new String[1][7];
 
         try
@@ -564,7 +542,8 @@ public class Model {
         return allMovieResult;
     }
     
-    public int movieID(int movieCode) //getting the movie ID
+    //fetching the movie ID
+    public int movieID(int movieCode)
     {
         int movieID=0;
         
@@ -612,7 +591,7 @@ public class Model {
         
     }
     
-    //test for date
+    //insert a row int the rent table with the details from the Rent object
     public boolean setRent(Rent rent)
     {
         boolean result = false;
@@ -658,8 +637,8 @@ public class Model {
         
         return result;
     }
-    //=================================TEST====================================================
     
+    //checks if the card details input matches a row in the database (if a card exists)
     public boolean userCardInput(User user)
     {
         
@@ -709,6 +688,7 @@ public class Model {
         
     }
     
+    //Fetch the customer id and balance of each users that mathces the input
     public int[] userID(User user)
     {
         int[] userNumber= new int[2]; //stores the userNumber in index 0 and the balance on index 1
@@ -759,7 +739,8 @@ public class Model {
         
     }
     
-    public void updateNumAvailRent(int movieID) //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    public void updateNumAvailRent(int movieID) 
     {
         
         try {
@@ -780,8 +761,6 @@ public class Model {
             // Execute the query
             stmt.executeUpdate(query);
 
-            // Loop through the result set
-            
             // Close the statement and the connection
             
             stmt.close();
@@ -804,9 +783,9 @@ public class Model {
         
     }
     
-    public void deductBalance(int customerID) //charges the customer 2.99 euros for their rent and add 1 to the "times_used" column (the number of times they rented)
+    //charges the customer 2.99 euros for their rent and add 1 to the "times_used" column (the number of times they rented)
+    public void deductBalance(int customerID) 
     {
-        
         try {
 
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
@@ -824,8 +803,6 @@ public class Model {
 
             // Execute the query
             stmt.executeUpdate(query);
-
-            // Loop through the result set
             
             // Close the statement and the connection
             stmt.close();
@@ -848,7 +825,7 @@ public class Model {
         
     }
     
-        //assigns a card number to a customer
+    //creates a new card based on the generated card details and put it in the database 
     public boolean newCard(Card cardDetails)
     {
         boolean result = false;
@@ -894,7 +871,10 @@ public class Model {
         
         return result;
     }
-        //=======================RETURN TEST========================================
+    
+    //================================================================RETURN================================================================\\
+    
+    //checks if the movie code input is linked to any movie in the database
      public boolean checkMovieCode(int movieCode)
     {
         boolean result = false;
@@ -945,6 +925,7 @@ public class Model {
         return result;
     }
     
+    //checks if the movie isn't returned yet by the user of the card inserted
     public boolean checkValidRent(int movieID, int customerID)
     {
         boolean result = false;
@@ -954,8 +935,8 @@ public class Model {
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
-            String query = "Select * from rent where id_movie = " + movieID + " and id_customer = " + customerID + " and date_return is null";
-            System.out.println(query);
+            String query = "Select * from rent where id_movie = " + movieID + " and id_customer = " + customerID + " and date_return is null"; //the date return should be null meaning the movie isn't returned yet.
+                                                                                                                                               //it avoids a user "returning" a movie that was already returned
 
             //Get a connection to the database
             Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
@@ -996,8 +977,8 @@ public class Model {
         return result;
     }
     
-    
-    public void updateNumAvailReturn(int movieID) //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    public void updateNumAvailReturn(int movieID) 
     {
         
         try {
@@ -1018,7 +999,48 @@ public class Model {
             // Execute the query
             stmt.executeUpdate(query);
 
-            // Loop through the result set
+            // Close the statement and the connection
+            
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (num Avail):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+
+    //Updates the date_return in the rent table in the database if all the details are valid
+    public void setReturnDate(int movieID, int customerID, String returnDate) 
+    {
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "UPDATE rent set date_return = '"+returnDate+ "' WHERE id_customer ="
+                    +customerID + " and id_movie = " +movieID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
             
             // Close the statement and the connection
             
@@ -1041,8 +1063,350 @@ public class Model {
         
         
     }
+    
+    //saves the email if the user input their email
+    public void setemail(int customerID,User userEmail) 
+    {
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "UPDATE movie_customers set email = '"+userEmail.getEmail()+ "' WHERE id_customer ="
+                    +customerID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
+            
+            // Close the statement and the connection
+            
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (num Avail):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+    
+    //================================================================Late Return Charges================================================================\\
+    
+    //fetch the rent id based on the rent details the customer provided and the return date
+    public int rentID(int movieID, int customerID, String returnDate)
+    {
+        int rentID = 0; //stores the userNumber in index 0 and the balance on index 1
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select * from rent where id_movie = "+ movieID + " and id_customer = "+ customerID + " and date_return = '" + returnDate + "'";
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Loop through the result set
+            rs.next();
+            rentID = rs.getInt(1);
+            
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (rentID):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return rentID;
+        
+    }
+    
+    //Counts the number of days past the due date
+    public int countLateDaysReturn(int rentID)
+    {
+        int numDaysLate=0;
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "SELECT DATEDIFF((select date_return from rent where id_rent = " + rentID + "),(select date_rent from rent where id_rent = " + rentID + ")) - 1"; //the formula has (-1) because the user should return the movie the day 
+                                                                                                                                                                             //after they rented it, so that doesn't count as a "late day"
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Loop through the result set
+            rs.next();
+            numDaysLate = rs.getInt(1);
+            
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (daysLate):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return numDaysLate;
+        
+    }
+    
+    //Takes the customer ID and the total charge based on the number of days past the due date and deducts it on the card balance of the customer
+    public void deductLateCharge(int customerID, double charge) //charges the customer 2.99 euros for their rent and add 1 to the "times_used" column (the number of times they rented)
+    {
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Update movie_customers "
+                    + "Set balance = balance - "+charge
+                    + "where id_customer = "+customerID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
+            
+            // Close the statement and the connection
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception(deduct)");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+    
+    //================================================================"Never returned" checker"================================================================\\
+    //Charges 15 euros automatically on users that didn't returned their movies for 10 days after the due
+    
+    //counts the result of rents that doesn't have a return date yet
+    public int countReturn(){
+        
+        int countResult = 0;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String countQuery = "Select count(*) from rent where date_return is null";
+            
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(countQuery);
+            rs.next();
+            countResult = rs.getInt(1);
+            
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
    
-    public boolean setReturn(Rent rent)
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return countResult;
+    }
+    
+    //fetch the results of rents that doesn't have a return date yet
+    public String[][] returnChecker(int count) 
+    {
+        System.out.println(count);
+        String[][] returnResult = new String[count][5];
+
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String searchQuery = "Select * from rent where date_return is null";
+            
+
+            Connection conn = DriverManager.getConnection(dbServer,dbUser,dbPassword);
+            
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(searchQuery);
+            int row = 0;
+            
+            while (rs.next()) {                     
+                
+                returnResult[row][0] = rs.getString("id_rent");
+                returnResult[row][1] = rs.getString("id_customer");
+                returnResult[row][2] = rs.getString("id_movie");
+                returnResult[row][3] = rs.getString("date_rent");
+                returnResult[row][4] = rs.getString("date_return");
+                row++;
+                
+            }
+
+            // Close the result set, statement and the connection
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException se) {
+            System.out.println("SQL Exception:");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return returnResult;
+    }
+    
+    //Gets the difference between the current date and the rent date 
+    public int lateDaysCounter(int count, String returnDate, int idRent)
+    {
+        int dateDifference = 0;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "SELECT DATEDIFF('"+returnDate+"',(select date_rent from rent where id_rent = "+idRent+"));";
+
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            dateDifference=  rs.getInt(1);
+                
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: afasdsadfa");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return dateDifference;
+    }
+    
+    
+    
+    //charges the customer if the difference between the current date and the rent date is more than 11.
+    //(11 days because they have a day to return the movie after they rent it, then they have 10 days to
+    //return it before they are charged the maximum 15 euros. They will be automatically charged even if
+    //they don't access the system using this method
+    public boolean chargeLateMax(int idRent)
     {
         boolean result = false;
         
@@ -1051,9 +1415,10 @@ public class Model {
             String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
             String dbUser = "Jon_2019395";
             String dbPassword = "2019395";
-            String update = "UPDATE rent set date_return = " +rent.getReturnDate()+ " WHERE id_customer ="
-                    +rent.getCustomerID() + " and id_movie = " +rent.getMovieID();
-            System.out.println(update);
+            String update = "Update rent join movie_customers\n" +
+                                "on rent.id_customer = movie_customers.id_customer\n" +
+                                "set movie_customers.balance = movie_customers.balance-15, rent.date_return = '2999-12-31'\n" + //set the return date to 2999-12-31 to indicate that the disc isn't returned and charges the
+                                "where id_rent = "+idRent+";";                                                                  //customer 15 euros
 
             //Get a connection to the database
             Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
@@ -1087,6 +1452,56 @@ public class Model {
         
         
         return result;
+    }
+    
+    //fetch the email of the user if it's not null
+    public String fetchLateMaxEmail(int idRent)
+    {
+        String email = null;
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select email from rent join movie_customers\n" +
+                            "on rent.id_customer = movie_customers.id_customer\n" +
+                            "where id_rent = "+idRent+";";                                                                  
+            
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            email=  rs.getString("email");
+            
+            
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: ");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return email;
     }
 }
     

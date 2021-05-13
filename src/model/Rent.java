@@ -14,8 +14,9 @@ public class Rent {
     private int movieID;
     private int customerID;
     String rentDate;
+    String rentReturn;
 
-    public Rent(int movieID, int customerID) {
+    public Rent(int movieID, int customerID) {  //for the rent
         this.movieID = movieID;
         this.customerID = customerID;
     }
@@ -35,6 +36,22 @@ public class Rent {
     public int getCustomerID() {
         return customerID;
     }
+
+    public String getRentReturn() {
+        return rentReturn;
+    }
+
+    public void setRentReturn(String rentReturn) {
+        this.rentReturn = rentReturn;
+    }
+
+    public Rent(int movieID, int customerID, String rentReturn) { //for the movie return
+        this.movieID = movieID;
+        this.customerID = customerID;
+        this.rentReturn = rentReturn;
+    }
+    
+    
 
     String getReturnDate() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

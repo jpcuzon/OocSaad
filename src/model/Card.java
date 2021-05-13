@@ -7,10 +7,7 @@ package model;
 
 import java.util.Random;
 
-/**
- *
- *
- */
+
 public class Card {
     
     private String cardNumber;
@@ -56,18 +53,8 @@ public class Card {
     
     
     
-    
-    
     CardGenerator cg = new CardGenerator();
     private String[] cardDetails = new String[3]; 
-
-//    public void setCardNumber(String cardNumber) {
-//        this.cardNumber = cardNumber;
-//    }
-//    
-//    public void setCardDetails(String cardpin) {
-//        cardDetails[1] = cardpin;
-//    }
 
     
     public void generateCard(){
@@ -78,7 +65,7 @@ public class Card {
          
     }
 
-    //Innerclass for a card generator
+    //Innerclass for a card generator============================================================================
     public class CardGenerator{
         
         Random cardGen = new Random();

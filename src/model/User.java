@@ -12,8 +12,6 @@ package model;
 public class User extends Card{
     
     private String email;
-//    private String cardNumber;
-//    private String pin;
 
     public User(){
         
@@ -23,5 +21,19 @@ public class User extends Card{
         setCardNumber(cardNumber);
         setPin(pin);
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User(String email) {
+        this.email = email;
+    }
+    
+    
     
 }
