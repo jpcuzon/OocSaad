@@ -17,6 +17,9 @@ import model.Movies;
 import model.Rent;
 import model.User;
 import view.View;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 /**
  *
@@ -79,10 +82,13 @@ public class ViewController implements ActionListener {
         //----------------------------------------------------return----------------------------------------------------\\
         if(e.getActionCommand().equals("retur")){
             System.out.println("return a movie");
-            view.getWelcome().dispatchEvent(new WindowEvent(view.getWelcome(), WindowEvent.WINDOW_CLOSING));
+           // view.getWelcome().dispatchEvent(new WindowEvent(view.getWelcome(), WindowEvent.WINDOW_CLOSING));
             view.returnn();
         }
         
+        if(e.getActionCommand().equals("exit2")){
+            view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+        }
         //----------------------------------------------------search----------------------------------------------------\\
         if(e.getActionCommand().equals("search")){
             
@@ -572,55 +578,93 @@ public class ViewController implements ActionListener {
         
         
         
-        if(e.getActionCommand().equals("confirm")){
+       if(e.getActionCommand().equals("confirm")){
             
-            if(!(cardLast==null) || !(pin==null)){ //checks if the user entered a vaild card first
-                
-                    if(customerBalance>2.99){  //checks if the customer has enough balance first and shows an error message if they don't
-                        
-                        Rent rent = new Rent(movieID, customerID);
-                    
-                        //Date setter==============================================================
-                        Date date = new Date();
-                        String dateFormat = "yyyy-MM-dd";
-                        SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
-                        String sqlConvert = dateFormatter.format(date);
+    if(!(cardLast==null) || !(pin==null)){ //checks if the user entered a vaild card first
 
-                        rent.setRentDate(sqlConvert);
-                        System.out.println(sqlConvert);
-                        System.out.println(rent.getRentDate());
+            if(customerBalance>2.99){  //checks if the customer has enough balance first and shows an error message if they don't
 
-                        //========================================================================
+                Rent rent = new Rent(movieID, customerID);
 
-                        model.setRent(rent);
-                        model.updateNumAvailRent(movieID);
-                        model.deductBalance(customerID); //deducts 2.99 euros on the user balance
+                //Date setter==============================================================
+                Date date = new Date();
+                String dateFormat = "yyyy-MM-dd";
+                SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+                String sqlConvert = dateFormatter.format(date);
 
-                        System.out.println("Success! 3 "+cardLast + " " + pin + " "+ movieCode + " UserID "+customerID + " movieID "+ movieID);  
-                        JOptionPane.showMessageDialog(view.getInfoMainCard(), "Please don't forget to take the movie disc and your card!", "Transaction Complete!", 1);
-                        view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
-                        
-                        cardLast = null; //re-initializes or 'removes' the card
-                        pin = null; 
-                        
-                        
-                    
-                    }else{
-                        
-                        showMessageDialog(view.getInfoMainCard(), "Insufficient Balance!", "Error!", 0);
-                        cardLast = null; //re-initializes or 'removes' the card
-                        pin = null; 
-                        
-                    }
-                
-            }else{showMessageDialog(view.getInfoMainCard(), "Please enter your payment details first!", "Error!", 0);}
+                rent.setRentDate(sqlConvert);
+                System.out.println(sqlConvert);
+                System.out.println(rent.getRentDate());
 
-//            if(view.getEmailButton().isSelected()){
-//                System.out.println(view.getEmailInput().getText());
-//            }else{System.out.println("No email");}
-//            
-            
-        }
+                //========================================================================
+
+                model.setRent(rent);
+                model.updateNumAvailRent(movieID);
+                model.deductBalance(customerID); //deducts 2.99 euros on the user balance
+
+                System.out.println("Success! 3 "+cardLast + " " + pin + " "+ movieCode + " UserID "+customerID + " movieID "+ movieID); 
+
+                boolean emailSent = false;
+
+                //Initializes email to null first to remove previous details===================================================
+
+                String email = null;
+
+                if(view.getEmailButton().isSelected()){
+                    System.out.println("Is selected");
+                    email = view.getEmailInput().getText();
+
+                    if(email.contains("@")&&email.contains(".")){ //simple validation for email; must contain '@' amd "."
+
+                        System.out.println(email);
+
+                        sendEmail(email);
+                        emailSent = true;
+
+                    }else{System.out.println("Invalid E-mail!");}
+
+                }else{System.out.println("No email");}
+
+                // changes the message depending if the user choose to receive an email or not
+                if(emailSent){
+
+                    JOptionPane.showMessageDialog(view.getInfoMainCard(), "Please don't forget to take the movie disc and your card!"
+                            + "\nRemember the movie code when returning the movie."
+                            + "\nMovie Code: "+infoMovie[0][5]
+                            + "\n(Email sent. Check your e-mail for receipt!)", "Transaction Complete!", 1);
+                    view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+
+                }else{
+
+                    JOptionPane.showMessageDialog(view.getInfoMainCard(), "Please don't forget to take the movie disc and your card!"
+                            + "\nRemember the movie code when returning the movie."
+                            + "\nMovie Code: "+infoMovie[0][5], "Transaction Complete!", 1);
+                    view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+
+                }
+
+
+
+                cardLast = null; //re-initializes or 'removes' the card
+                pin = null; 
+
+
+
+            }else{
+
+                showMessageDialog(view.getInfoMainCard(), "Insufficient Balance!", "Error!", 0);
+                cardLast = null; //re-initializes or 'removes' the card
+                pin = null; 
+
+            }
+
+
+    }else{showMessageDialog(view.getInfoMainCard(), "Please enter your payment details first!", "Error!", 0);}
+
+
+
+
+}
         
         
         if(e.getActionCommand().equals("createCard")){
@@ -659,8 +703,125 @@ public class ViewController implements ActionListener {
         }
         
         
+        if(e.getActionCommand().equals("submit")){
+            
+
+            cardLast = view.getLastDigits().getText();
+            pin = view.getCardPin().getText();
+            String movieCodeTemp = view.getMovieCode2().getText();
+            movieCode = Integer.parseInt(movieCodeTemp);
+            User user = new User(cardLast, pin);
+            boolean checkCard = model.userCardInput(user);
+
+            System.out.println(cardLast+pin);
+            if(!(cardLast==null) || !(pin==null)){ //checks if the user entered a vaild card first
+                
+                if(!cardLast.matches("[a-zA-Z]*")&&(cardLast.length()==4)){
+
+                        if(!pin.matches("[a-zA-Z]*")&&(pin.length()==3)){
+
+                            
+                            if(checkCard){
+                
+                
+                                customerID = model.userID(user)[0];
+                                customerBalance = model.userID(user)[1]; //fetches the card balance
+                                
+                                
+                                
+                                if(!movieCodeTemp.matches("[a-zA-Z]*")&&(movieCodeTemp.length()==4)){
+                                    
+                                    if(model.checkMovieCode(movieCode)){
+                                        
+                                        movieID = model.movieID(movieCode); //make a model to check if the movie code is in the database
+                                        if(model.checkValidRent(movieID, customerID)){
+                                            
+                                            //===================================================================================
+                                            
+                                            System.out.println("Rent found!");
+                                            JOptionPane.showMessageDialog(view.getReturnn(), "Thank you for using Xtra-Vision Kiosk!"
+                                                    + "\n See you again Soon!");
+                                            
+                                            //==================================================================================
+                                            
+                                        }else{System.out.println("Movie not rented with this card");}
+                                        
+                                        System.out.println("Success! 2 "+cardLast + " " + pin + " MovieCode: " + movieCode + "Customer ID "+customerID+" Movie ID "+ movieID);
+                                        
+                                    }else{showMessageDialog(view.getInfoMainCard(), "Wrong movie code inserted!", "Error!", 0);}
+                                    
+                                    
+                                }else{
+                                    showMessageDialog(view.getInfoMainCard(), "Please enter a valid movie code! (Must contain 4 digits and doesn't contain any letter)", "Error!", 0);
+                                }
+
+                            }else{
+
+                                showMessageDialog(view.getInfoMainCard(), "Wrong Card Details!", "Error!", 0);
+                                cardLast = pin = null;
+                            }
+                            
+                            System.out.println("1 "+cardLast + " " + pin);
+                            
+                        }else{showMessageDialog(view.getInfoMainCard(), "Please enter a valid pin! (Must be 3 numbers and doesn't contain any letter)", "Error!", 0);}
+
+                    }else{showMessageDialog(view.getInfoMainCard(), "Please enter a valid 4 digit number! (Must be 4 numbers that matches the last 4 digits of your card and doesn't contain any letter)", "Error!", 0);}
+                
+//                    if(customerBalance>2.99){  //checks if the customer has enough balance first and shows an error message if they don't
+//                        
+//                        Rent rent = new Rent(movieID, customerID);
+//                    
+//                        //Date setter==============================================================
+//                        Date date = new Date();
+//                        String dateFormat = "yyyy-MM-dd";
+//                        SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+//                        String sqlConvert = dateFormatter.format(date);
+//
+//                        rent.setRentDate(sqlConvert);
+//                        System.out.println(sqlConvert);
+//                        System.out.println(rent.getRentDate());
+//
+//                        //========================================================================
+//
+//                        model.setRent(rent);
+//                        model.updateNumAvailRent(movieID);
+//                        model.deductBalance(customerID); //deducts 2.99 euros on the user balance
+//
+//                        System.out.println("Success! 3 "+cardLast + " " + pin + " "+ movieCode + " UserID "+customerID + " movieID "+ movieID);  
+//                        JOptionPane.showMessageDialog(view.getInfoMainCard(), "Please don't forget to take the movie disc and your card!\n"
+//                                + "Please remember the movie code for return it: "+infoMovie[0][5], "Transaction Complete!", 1);
+//                        view.getInfo().dispatchEvent(new WindowEvent(view.getInfo(), WindowEvent.WINDOW_CLOSING));
+//                        
+//                        cardLast = null; //re-initializes or 'removes' the card
+//                        pin = null; 
+//                        
+//                        
+//                    
+//                    }else{
+//                        
+//                        showMessageDialog(view.getInfoMainCard(), "Insufficient Balance!", "Error!", 0);
+//                        cardLast = null; //re-initializes or 'removes' the card
+//                        pin = null; 
+//                        
+//                    }
+                
+            }else{showMessageDialog(view.getInfoMainCard(), "Please enter your payment details first!", "Error!", 0);}
+
+//            if(view.getEmailButton().isSelected()){
+//                System.out.println(view.getEmailInput().getText());
+//            }else{System.out.println("No email");}
+//            
+            
+        }
         
-        
+       if(e.getActionCommand().equals("exit1")){
+           view.getReturnn().dispatchEvent(new WindowEvent(view.getReturnn(), WindowEvent.WINDOW_CLOSING));
+       } 
+       
+       if(e.getActionCommand().equals("exit3")){
+           view.getMain().dispatchEvent(new WindowEvent(view.getMain(), WindowEvent.WINDOW_CLOSING));
+           view.welcome();
+       }
         
         
         
@@ -674,6 +835,59 @@ public class ViewController implements ActionListener {
     //I think we need getters if we call attributes from one package to another so we don't have to
     //make them public, or better we can make them private for encapsulation
 
+    
+    private void sendEmail(String email){
+
+    //https://stackoverflow.com/questions/19493904/javax-mail-messagingexception-could-not-connect-to-smtp-host-localhost-port
+    final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+ // Get a Properties object
+
+    String receiptMessage = "Thank you for renting!" //message for the email
+           +"\n\n\nMovie: "+infoMovie[0][0]
+            + "\nMovie Code: "+infoMovie[0][5]
+           +"\nCost: €2.99"
+            + "\nDate of transaction: "+new Date()
+            +"\n\n\n\n\n\n"
+            + "\nPlease remember to return it on time!"
+            + "\nYou will be charged €1.50 per day up to maximum of 10 days if you failed to return it on time."
+            + "\nYou can keep the disc after 10 days (You will be charged €15).";
+
+    Properties props = System.getProperties();
+    props.setProperty("mail.smtp.host", "smtp.gmail.com");
+    props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+    props.setProperty("mail.smtp.socketFactory.fallback", "false");
+    props.setProperty("mail.smtp.port", "465");
+    props.setProperty("mail.smtp.socketFactory.port", "465");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.debug", "true");
+    props.put("mail.store.protocol", "pop3");
+    props.put("mail.transport.protocol", "smtp");
+    final String username = "oocsaad99@gmail.com";//
+    final String password = "samplepassword99";
+    try{
+      Session session = Session.getDefaultInstance(props, 
+                          new Authenticator(){
+                             protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(username, password);
+                             }});
+
+   // -- Create a new message --
+      Message msg = new MimeMessage(session);
+
+   // -- Set the FROM and TO fields --
+      msg.setFrom(new InternetAddress("oocsaad99@gmail.com"));
+      msg.setRecipients(Message.RecipientType.TO, 
+                        InternetAddress.parse(email,false));
+      msg.setSubject("Xtra-Vision Receipt");
+      msg.setText(receiptMessage);
+      msg.setSentDate(new Date());
+      Transport.send(msg);
+      System.out.println("Message sent.");
+    }catch (MessagingException e){ 
+      System.out.println("Error, cause: " + e);
+    }
+
+}
     
     public int getAllMovieCount() {
         return allMovieCount;

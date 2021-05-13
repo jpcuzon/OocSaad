@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+
 /**
  *
  * @author leojk
@@ -53,6 +54,7 @@ public class View extends JFrame {
     JPanel movieSection;
     JComboBox sort;
     CardLayout movieSectionL;
+    JPanel payPanel;
     
     Font txt;
     Font txt1;
@@ -494,17 +496,53 @@ public class View extends JFrame {
 }
     
     
-    //return frame
-    public void returnn(){
+ //return frame
+ JTextField movieCode2;
+        public void returnn(){
         returnn = new JFrame();
-            returnn.setVisible(true);
-            returnn.setSize(1600, 900);
-            returnn.setTitle("Xtra Vision");
-            BorderLayout welcomeLayout = new BorderLayout();
-            returnn.setLayout(welcomeLayout);
-            returnn.add(searchBar(), BorderLayout.PAGE_START);
+        returnn.setVisible(true);
+        returnn.setSize(700, 700);
+        returnn.setTitle("Xtra Vision - Movie Info");
+        BorderLayout rentBorder = new BorderLayout();
+        returnn.setLayout(rentBorder);
+        
+        ImageIcon logoxtra = new ImageIcon(getClass().getResource("images/logoxtravision.png"));        
+                logoxtra.setImage(logoxtra.getImage().getScaledInstance(680, 125, 100));    
+                JLabel logo = new JLabel(logoxtra);
+                    returnn.add(logo, BorderLayout.PAGE_START);
+                    
+        
+        JPanel inputCardDetails = new JPanel(new GridLayout(8,1,5,5));
+        returnn.add(inputCardDetails, BorderLayout.CENTER);
+            JLabel movieCode = new JLabel("Insert the movie code");
+            movieCode2 = new JTextField();
+            JLabel cardNumLabel = new JLabel("Please enter the last 4 digits of your card");
+            lastDigits = new JTextField(4);
+            JLabel cardPinLabel = new JLabel("Please enter your pin");
+            cardPin = new JTextField(4);
+            inputCardDetails.add(movieCode);
+            inputCardDetails.add(movieCode2);
+            inputCardDetails.add(cardNumLabel);
+            inputCardDetails.add(lastDigits);
+            inputCardDetails.add(cardPinLabel);
+            inputCardDetails.add(cardPin);
+            
+        JButton submit = new JButton("Submit");
+            submit.addActionListener(viewController);
+            submit.setActionCommand("submit");
+            inputCardDetails.add(submit);
+                    
+        JButton back = new JButton("Back");
+            back.addActionListener(viewController);
+            back.setActionCommand("exit1"); //to exit the return screen and go back yo the welcome screen
+            inputCardDetails.add(back);
+          
+                    
+        returnn.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        returnn.validate();
+        returnn.repaint();
 
-    }  
+    }   
     
     
     //faq frame
@@ -579,7 +617,7 @@ public class View extends JFrame {
         JPanel search = new JPanel();
 
             search.setBackground(new Color(160,0,0));
-            GridLayout searchGrid = new GridLayout(1,4);
+            GridLayout searchGrid = new GridLayout(1,5);
             search.setLayout(searchGrid);
             //image    
             ImageIcon logoxtra = new ImageIcon(getClass().getResource("images/logoxtravision.png"));        
@@ -597,6 +635,10 @@ public class View extends JFrame {
                     search.add(cart);
                     cart.addActionListener(viewController);
                     cart.setActionCommand("home");
+                JButton exit = new JButton("Exit");
+                    exit.addActionListener(viewController);
+                    exit.setActionCommand("exit3");
+                    search.add(exit);
 
                 
         return search;        
@@ -899,13 +941,15 @@ public class View extends JFrame {
         JPanel paymentDetails = new JPanel();
         paymentDetails.setLayout(new BorderLayout());
         payCenter.add(paymentDetails);
-            JPanel titlePanel = new JPanel(new GridLayout(2,1));
+            JPanel titlePanel = new JPanel(new GridLayout(3,1));
             titlePanel.setBorder(new EmptyBorder(20,20,60,20));//test
             paymentDetails.add(titlePanel, BorderLayout.PAGE_START);
                 JLabel movieTitle = new JLabel("Movie: "+viewController.getInfoMovie()[0][0]);
                 JLabel priceLabel = new JLabel("Price: €2.99");
+                JLabel movieCode = new JLabel("Movie Code: "+viewController.getInfoMovie()[0][5]);
                 titlePanel.add(movieTitle);
                 titlePanel.add(priceLabel);
+                titlePanel.add(movieCode);
 
                 JPanel cardDetails = new JPanel(new GridLayout(1,2));
                 cardDetails.setBorder(new EmptyBorder(0,20,0,20));
@@ -951,7 +995,7 @@ public class View extends JFrame {
                 back.setActionCommand("infoBack");
             JButton cancel = new JButton("Cancel");
                 cancel.addActionListener(viewController);
-                cancel.setActionCommand("exit");
+                cancel.setActionCommand("exit2");
 
                 footer.add(rent);
                 footer.add(back);
@@ -1068,6 +1112,18 @@ public class View extends JFrame {
     
     public JCheckBox getEmailButton() {
         return emailButton;
+    }
+
+    public JFrame getReturnn() {
+        return returnn;
+    }
+
+    public JTextField getMovieCode2() {
+        return movieCode2;
+    }
+
+    public JPanel getPayPanel() {
+        return payPanel;
     }
 
     

@@ -894,6 +894,200 @@ public class Model {
         
         return result;
     }
+        //=======================RETURN TEST========================================
+     public boolean checkMovieCode(int movieCode)
+    {
+        boolean result = false;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select * from movie_list where movie_code = " + movieCode;
+
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            ResultSet rs = stmt.executeQuery(query);
+            
+            if (rs.next()) {
+                result = true;
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: ");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return result;
+    }
+    
+    public boolean checkValidRent(int movieID, int customerID)
+    {
+        boolean result = false;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Select * from rent where id_movie = " + movieID + " and id_customer = " + customerID + " and date_return is null";
+            System.out.println(query);
+
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            ResultSet rs = stmt.executeQuery(query);
+            
+            if (rs.next()) {
+                result = true;
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: afasdsadfa");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return result;
+    }
     
     
+    public void updateNumAvailReturn(int movieID) //update the number of available disk in the kiosk and also adds 1 to the number of time the movie is rented
+    {
+        
+        try {
+
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String query = "Update movie_list "
+                    + "Set num_avail = num_avail+ 1 "
+                    + "where id_movie= "+movieID;
+
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            // Get a statement from the connection
+            Statement stmt = conn.createStatement();
+
+            // Execute the query
+            stmt.executeUpdate(query);
+
+            // Loop through the result set
+            
+            // Close the statement and the connection
+            
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            System.out.println("SQL Exception (num Avail):");
+
+            // Loop through the SQL Exceptions
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+
+                se = se.getNextException();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+    }
+   
+    public boolean setReturn(Rent rent)
+    {
+        boolean result = false;
+        
+        try
+        {
+            String dbServer = "jdbc:mysql://52.50.23.197:3306/Jon_2019395?useSSL=false";
+            String dbUser = "Jon_2019395";
+            String dbPassword = "2019395";
+            String update = "UPDATE rent set date_return = " +rent.getReturnDate()+ " WHERE id_customer ="
+                    +rent.getCustomerID() + " and id_movie = " +rent.getMovieID();
+            System.out.println(update);
+
+            //Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbServer, dbUser, dbPassword);
+
+            //get a statement from the connection
+            Statement stmt = conn.createStatement();
+            
+            //execute the query
+            stmt.executeUpdate(update);
+            
+            stmt.close();
+            conn.close();
+        
+        }catch (SQLException se) 
+        {
+            System.out.println("SQL Exception: ");
+            
+            //Loop through the Exceptions
+            while(se != null) 
+            {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                
+                se = se.getNextException();
+            } 
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        
+        
+        return result;
+    }
 }
+    
+
